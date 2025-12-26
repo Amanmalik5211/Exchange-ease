@@ -1,0 +1,48 @@
+.add-containerr{
+    background-color: rgb(182, 177, 177);
+    width: 650px;
+    height: 540px;
+   margin-left: 100px;
+   margin-top: 55px;
+}
+.add-containerr input {
+    background-color: rgb(254, 254, 255);
+    border: 2px solid black;
+}
+.add-containerr select {
+    background-color: rgb(254, 254, 255);
+    border: 2px solid black;
+}
+.add-containerr label{
+    padding-top: 8px;
+    color: rgb(0, 0, 0);
+    font-size: 22px;
+    font-weight: 529;
+    font-family: 'Times New Roman', Times, serif;
+}
+.miniadd-containerr{
+    padding: 21px;
+}
+
+.add-box{
+    display: flex;
+  align-items: center; 
+}
+.add-image {
+    width: 600px;
+    height: 400px; 
+    overflow: hidden; 
+    display: inline-block; 
+    margin-left: 70px;
+    margin-top: 60px;
+  }
+  
+  .add-image img {
+    width: 600px; 
+    height: 300px; 
+    display: block; 
+  }
+  .i2{
+    margin-top: 8px;
+  }
+  

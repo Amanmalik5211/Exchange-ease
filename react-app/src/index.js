@@ -17,6 +17,7 @@ import CategoryPage from './components/CategoryPage';
 import MyProducts from './components/MyProducts';
 import MyProfile from './components/MyProfile';
 import EditProduct from './components/EditProduct';
+import MyDetails from './components/MyDetials';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "/product/:productid",
     element: (<ProductDetail/>)
+  },
+  {
+    path: "/myproduct/:productid",
+    element: (<MyDetails/>)
   },
   {
     path: "/category/:catName",

@@ -4,7 +4,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 import Categoriess from './Categoriess';
 import Pcategory from './Pcategory';
-
+import './EditProduct.css';
+import EDIT from './EDIT.png'
 const EditProduct = () => {
     const params =useParams()
   console.log(params.pid,"params");
@@ -103,9 +104,10 @@ const handleProduct = ()=>{
     <>
     <div>
       <Header/>
-      <div className='p-3' style={{width: '80rem', height: '60rem'}}>
-    <h2>Edit product here</h2>
-    <div>
+      <div className='box'>
+    <div className='edit-image'> <img src={EDIT} alt="Edit Product" /></div>
+    <div className='containerr'>
+      <div className='mini-container'>
         <label>Product Name</label>
         <input type="text" value={pname} onChange={(e)=>{setPname(e.target.value)}} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
         
@@ -130,10 +132,11 @@ const handleProduct = ()=>{
 
         <label>Product Image</label>
         <input type="file" onChange={(e)=>{setPimage(e.target.files[0])}} className="form-control" />
-         <img height={50}width={100} src={'http://localhost:5000/'+ poldpimage }/><br></br>
+         <img height={70}width={110} src={'http://localhost:5000/'+ poldpimage }/><br></br>
          <input type="file" onChange={(e)=>{setPimage2(e.target.files[0])}} className="form-control" />
-         <img height={50}width={100} src={'http://localhost:5000/'+ poldpimage2 }/><br></br>
+         <img height={70}width={110} src={'http://localhost:5000/'+ poldpimage2 }/><br></br>
         <button onClick={handleProduct} className='btn btn-primary mt-3'>Update</button>
+    </div>
     </div>
 </div>
     </div>

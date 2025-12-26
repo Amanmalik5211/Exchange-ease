@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import './SignUp.css';
+import { Link, useNavigate } from 'react-router-dom';
+import logo2 from './logo2.png';
 import axios from 'axios';
 
 function Signup() {
@@ -8,84 +10,137 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const userSignup = async (e) => {
+  const userSignup = (e) => {
     e.preventDefault();
-    console.log({ username, password, email, mobile });
+    setIsLoading(true);
+    
+    const url = 'http://localhost:5000/signup';
+    const data = { username, email, password, mobile };
 
-    try {
-      let profilePhotoUrl = null;
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append('photo', selectedFile);
-
-        const response = await axios.post('http://localhost:5000/api/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-
-        profilePhotoUrl = response.data.photoUrl;
-        console.log('File uploaded successfully:', profilePhotoUrl);
-      }
-
-      // Proceed with user signup
-      const url = 'http://localhost:5000/signup';
-      const data = {
-        username,
-        email,
-        password,
-        mobile,
-        profilePhotoUrl
-      };
-
-      const res = await axios.post(url, data);
-      console.log(res.data);
-
-      if (res.data.message) {
-        alert(res.data.message);
-        // if (res.data.message === 'saved user') {
-        //   navigate('/');
-        // }
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred during signup');
-    }
+    axios.post(url, data)
+      .then((res) => {
+        if (res.data.message === 'saved user') {
+          navigate("/login");
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Server error');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
-    <>
-      <div className="div-form">
-        <form>
-          <div className="mb-3">
-            <label htmlFor="exampleInputUsername" className="form-label">Username</label>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" />
+    <div className='signup-page'>
+      <div className='signup-container'>
+        
+        {/* Brand Section */}
+        <div className='signup-brand'>
+          <img src={logo2} alt="Exchange Ease Logo" />
+          <h1 className='signup-brand-title'>Exchange Ease</h1>
+          <p className='signup-brand-subtitle'>Your Marketplace, Simplified</p>
+          
+          <div className='signup-features'>
+            <div className='signup-feature'>
+              <span className='signup-feature-icon'>🛒</span>
+              <span>Buy & sell products locally</span>
+            </div>
+            <div className='signup-feature'>
+              <span className='signup-feature-icon'>💬</span>
+              <span>Chat directly with sellers</span>
+            </div>
+           
           </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+        </div>
+
+        {/* Signup Card */}
+        <div className='signup-card'>
+          <div className='signup-card-header'>
+            <h2 className='signup-card-title'>Create Account</h2>
           </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" />
+
+          <form onSubmit={userSignup}>
+            <div className='signup-form-row'>
+              <div className='signup-form-group'>
+                <label className='signup-label'>Username</label>
+                <div className='signup-input-wrapper'>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className='signup-input'
+                    placeholder='Your name'
+                    required
+                  />
+                  <span className='signup-input-icon'>👤</span>
+                </div>
+              </div>
+
+              <div className='signup-form-group'>
+                <label className='signup-label'>Mobile</label>
+                <div className='signup-input-wrapper'>
+                  <input
+                    type="tel"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                    className='signup-input'
+                    placeholder='Phone number'
+                    required
+                  />
+                  <span className='signup-input-icon'>📱</span>
+                </div>
+              </div>
+            </div>
+
+            <div className='signup-form-group'>
+              <label className='signup-label'>Email Address</label>
+              <div className='signup-input-wrapper'>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className='signup-input'
+                  placeholder='Enter your email'
+                  required
+                />
+                <span className='signup-input-icon'>✉</span>
+              </div>
+            </div>
+
+            <div className='signup-form-group'>
+              <label className='signup-label'>Password</label>
+              <div className='signup-input-wrapper'>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className='signup-input'
+                  placeholder='Create a password'
+                  required
+                />
+                <span className='signup-input-icon'>🔒</span>
+              </div>
+            </div>
+
+            <button type="submit" className='signup-btn' disabled={isLoading}>
+              {isLoading ? 'Creating Account...' : 'Create Account'}
+            </button>
+          </form>
+
+          <div className='signup-footer'>
+            <p className='signup-footer-text'>Already have an account?</p>
+            <Link to='/login' className='signup-footer-link'>Sign In</Link>
           </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputMobile" className="form-label">Mobile</label>
-            <input type="text" value={mobile} onChange={(e) => setMobile(e.target.value)} className="form-control" id="exampleInputMobile" />
-          </div>
-          <div>
-            <input type="file" onChange={handleFileChange} />
-          </div>
-          <button type="submit" onClick={userSignup} className="btn btn-primary">SignUp</button>
-        </form>
+        </div>
+
       </div>
-    </>
+    </div>
   );
 }
 

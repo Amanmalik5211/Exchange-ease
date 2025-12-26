@@ -1,18 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Pcategory from './Pcategory'
-import "./Header.css";
+import "./Home.css";
 import { useNavigate } from 'react-router-dom';
 const Categoriess = (props) => {
   const navigate = useNavigate();
+  const[allproduct,SetAllproduct]=useState('');
+  const handelcat = ()=>{
+    SetAllproduct(
+      navigate('/')
+    )
+  }
   return (
     <div className='cat-container'>
     <div>
-    <span>All Categories</span>
+    <span value={allproduct} onClick={handelcat}><button className='c-btn-all'>All Categories</button></span>
         {Pcategory && Pcategory.length>0 && 
         Pcategory.map((item,index)=>{
             return(
-            <span key = {index} className='category'
-              onClick={()=>navigate('/category/'+item)}>{item}</span>
+            <span key = {index} 
+              onClick={()=>navigate('/category/'+item)}><button className='c-btn'>{item}</button></span>
             )
         })}
     </div>

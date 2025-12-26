@@ -114,7 +114,7 @@ axios.get(url2, {
    axios.post(url,data)
    .then((res)=>{
     if(res.data.message){
-      alert("liked")
+      // alert("liked")
       setRefresh(!refresh);
     }
    })
@@ -137,7 +137,7 @@ const handleDislike =(productId)=>{
   axios.post(url,data)
   .then((res)=>{
    if(res.data.message){
-     alert("disliked")
+    //  alert("disliked")
      setRefresh(!refresh);
    }
   })
@@ -162,26 +162,31 @@ const handleProducts= (id)=>{
     <div>
       <Header search={search} handleSearch={handleSearch} handleClick={handleClick}/>
       <Categoriess handleCategory = {handleCategory}/>
-      {issearch && cproducts && cproducts.length > 0 && <h3>Search Results
+
+      {issearch && cproducts && cproducts.length > 0 && <h3 className='search-result'>Search Results
         <button className='clear-btn' onClick={handelclear}>Clear</button>
         </h3>}
-      {issearch && cproducts && cproducts.length === 0 && <h3>No Result Found</h3>}
+      {issearch && cproducts && cproducts.length === 0 && <h3 className='search-noresult'>No Result Found</h3>}
 
      {issearch && <div className='d-flex justify-content-center flex-wrap'>
       {cproducts && cproducts.length>0 &&
          cproducts.map((item,index)=>{
            return(
-             <div key={item._id} className='card m-4'>
+             <div key={item._id} className='card m-4  cardd'>
               <div className='icon-cont'>
               {likedproducts.find(likedItem => likedItem._id === item._id) ? (
-                           <FaHeart onClick={()=>handleDislike(item._id)} className='red-icon'/>) : (
+                      <FaHeart onClick={()=>handleDislike(item._id)} className='red-icon'/>) : (
                       <FaHeart onClick={() => handleLike(item._id)} className='icon' />)}
                         </div>
 
-            <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
-            <p className=' m-2'> {item.pname} | {item.pcategory}</p>
-            <p className=' m-2 price-text'> ₹ {item.price}</p>
-            <p className=' m-2  text-success'> {item.pdesc}</p>
+            <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
+            <div className='card-content'>
+              <span className='category-badge'>{item.pcategory}</span>
+              <h3 className='name-text'>{item.pname}</h3>
+              <p className='price-text'>₹{item.price}</p>
+              <p className='desc'>{item.pdesc.length > 50 ? item.pdesc.substring(0, 50) + '...' : item.pdesc}</p>
+            </div>
+
              </div>
           )
         })
@@ -192,17 +197,20 @@ const handleProducts= (id)=>{
       {products && products.length>0 &&
          products.map((item,index)=>{
           return(
-            <div key={item._id} className='card m-4'>
+            <div key={item._id} className='card m-4 cardd'>
               <div  className='icon-cont'>
               {likedproducts.find(likedItem => likedItem._id === item._id) ? (
                        <FaHeart onClick={()=>handleDislike(item._id)} className='red-icon'/>) : (
                              <FaHeart onClick={()=>handleLike(item._id)} className='icon' />
                                    )}
                   </div>
-            <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
-            <p className='m-2'> {item.pname} | {item.pcategory}</p>
-            <p className='m-2 price-text'> ₹ {item.price}</p>
-            <p className='m-2  text-success'> {item.pdesc}</p>
+            <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
+            <div className='card-content'>
+              <span className='category-badge'>{item.pcategory}</span>
+              <h3 className='name-text'>{item.pname}</h3>
+              <p className='price-text'>₹{item.price}</p>
+              <p className='desc'>{item.pdesc.length > 50 ? item.pdesc.substring(0, 50) + '...' : item.pdesc}</p>
+            </div>
              </div>
           )
          })

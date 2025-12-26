@@ -4,6 +4,16 @@ import Header from './Header';
 
 const MyProfile = () => {
     const [user, setUser] = useState(null);
+    const [product,setProduct] = useState()
+    const handleDelete = async (productId) => {
+        try {
+          await axios.delete(`http://localhost:5000/products/${productId}`);
+          setProduct(product.filter(product => product._id !== productId));
+          console.log('Product deleted successfully');
+        } catch (error) {
+          console.error('Error deleting product:', error);
+        }
+      };
 
     useEffect(() => {
         const userId = localStorage.getItem("userId");

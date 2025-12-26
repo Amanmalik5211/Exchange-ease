@@ -3,6 +3,9 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const multer  = require('multer')
 const path = require('path');
+const http =require('http');
+const { Server } = require("socket.io");
+const bcrypt = require('bcrypt');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -13,11 +16,19 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + '-' + uniqueSuffix)
   }
 })
-const upload = multer({ storage: storage },{ dest: 'uploads/' })
+const upload = multer({ storage: storage })
 
 const app = express()
+
+
+const httpServer = http.createServer(app);
+const io =new Server(httpServer , {
+  cors:{
+    origin:'*',
+  }
+});
+
 app.use('/uploads',express.static(path.join(__dirname,'uploads')));
-app.use(express.static(path.join(__dirname, 'public')));
 const port = 5000
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
@@ -25,13 +36,18 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-mongoose.connect('mongodb+srv://amanm85:amanm85@cluster0.chkzz6a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+mongoose.connect('mongodb+srv://amanm85:amanm85@cluster0.chkzz6a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+  .then(() => console.log('✅ MongoDB connected successfully'))
+  .catch((err) => {
+    console.error('❌ MongoDB connection error:', err.message);
+    console.log('🔧 Check: 1) Atlas cluster active 2) IP whitelisted 3) Internet connection');
+  });
 
 const Users = mongoose.model('Users', {
   username: { type: String, minlength: 3, maxlength: 20 },
   mobile: { type: String, minlength: 10,maxlength: 10 },
   email: { type: String, minlength: 6, maxlength: 50 },
-  password: { type: String, minlength: 5, maxlength: 20 },
+  password: { type: String },
   likedProducts:[{type:mongoose.Schema.Types.ObjectId, ref:'Products'}] 
     });
 
@@ -55,81 +71,105 @@ const Users = mongoose.model('Users', {
           }
         }
        })
-
-       Schema.index({pLoc:'2dsphere'});  //ass pass ke search ke liye..
-
-const Products = mongoose.model('Products',Schema);
+          const Products = mongoose.model('Products',Schema);
 
 
-app.post('/api/upload', upload.single('photo'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
-  }
-  res.send('File uploaded successfully.');
-});
-
+let messages = [];
+ io.on("connection", (socket) => {
+            console.log('Socket connected', socket.id);
+            socket.emit('getMsg', messages); 
+            socket.on('sendMsg', (data) => {
+              messages.push(data);
+              io.emit('getMsg', messages);
+            });
+            socket.on('disconnect', () => {
+              console.log('Socket disconnected', socket.id);
+            });
+   });
+          
 app.get('/', (req, res) => {
   res.send('HOME HOME HOME ')
 })
 
-app.post('/signup', (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  const email = req.body.email;
-  const mobile = req.body.mobile;
-  // console.log(req.body);
-  const user = new Users({ username: username, email:email , password:password,mobile:mobile });
-    user.save()
-    .then(()=>{
-      res.send({message:'saved user'})
-     }).catch(()=>{
-      res.send({message:'server err'})
-     })
-})
+app.post('/signup', async (req, res) => {
+  const { username, password, email, mobile } = req.body;
 
-app.post('/login', (req, res) => {
-  // const username = req.body.username;
-  const password = req.body.password;
-  // console.log('loginnn');
-  const email = req.body.email;
-  // console.log(req.body);
-  Users.findOne({email})
-  .then((result)=>{
-    // console.log(result,'user data')
-    if(!result){
-      res.send({message:'not find user'})}
-    else{
-      if(result.password==password){
-        const token = jwt.sign({data: result}, 'mykey', { expiresIn: '1h' });
-      res.send({message:'find user',token:token,userId:result._id})
+  try {
+    const existingUser = await Users.findOne({ email });
+    if (existingUser) {
+      return res.send({ message: 'User already exists' });
     }
-    if(result.password!=password){
-      res.send({message:'password not match'})
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new Users({ username, email, password: hashedPassword, mobile });
+    await user.save();
+    res.send({ message: 'saved user' });
+  } catch (error) {
+    console.error("Signup error:", error);
+    res.send({ message: 'server err' });
+  }
+});
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await Users.findOne({ email });
+
+    if (!user) {
+      return res.send({ message: 'not find user' });
     }
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.send({ message: 'password not match' });
     }
-  }).catch(()=>{
-    res.send({message:'server err'})
-  })
-})
+
+    const token = jwt.sign({ data: user }, 'mykey', { expiresIn: '1h' });
+    return res.send({
+      message: 'find user',
+      token: token,
+      userId: user._id,
+      username: user.username,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.send({ message: 'server err' });
+  }
+});
 
 app.post('/add-product',upload.fields([{name:"pimage"},{name:"pimage2"}]), (req, res) => {
-  // console.log(req.files['pimage'][0].path, "bbb"); // Accessing the path of the first file in the 'pimage' field
-  // console.log(req.files['pimage2'][0].path, "..yy");
-  // console.log(req.body,"jknjk")
-  // console.log(req.files);
-  const { pname, pdesc, price, pcategory,plat,plong } = req.body;
-  const pimage = req.files.pimage[0].path;
-  const pimage2 = req.files.pimage2[0].path;
-  const addBy =req.body.userId;
-  
-  const product = new Products({ 
-     pname ,pdesc ,price ,pcategory, pimage, pimage2, addBy , pLoc: {type:'Point',coordinates:[plat,plong]} });
-  product.save()
-    .then(()=>{
-      res.send({message:'product added'})
-     }).catch(()=>{
-      res.send({message:'server5252err'})
-     })
+  try {
+    const { pname, pdesc, price, pcategory, plat, plong } = req.body;
+    
+    // Check if files are uploaded
+    if (!req.files || !req.files.pimage || !req.files.pimage2) {
+      return res.status(400).send({ message: 'Both images are required' });
+    }
+    
+    const pimage = req.files.pimage[0].path;
+    const pimage2 = req.files.pimage2[0].path;
+    const addBy = req.body.userId;
+    
+    // GeoJSON coordinates are [longitude, latitude]
+    const product = new Products({ 
+      pname, pdesc, price, pcategory, pimage, pimage2, addBy,
+      pLoc: { type: 'Point', coordinates: [parseFloat(plong), parseFloat(plat)] }
+    });
+    
+    product.save()
+      .then(() => {
+        res.send({ message: 'product added' })
+      })
+      .catch((err) => {
+        console.error('Add product error:', err);
+        res.status(500).send({ message: 'Error adding product' })
+      })
+  } catch (error) {
+    console.error('Add product error:', error);
+    res.status(500).send({ message: 'Server error' });
+  }
 })
 
 app.get('/get-products',(req,res)=>{
@@ -147,6 +187,7 @@ app.get('/get-products',(req,res)=>{
     res.send({message:'server000err'})
   })
 })
+
 // app.get('/get-all-products',(req,res)=>{
 //   Products.find()
 //   .then((result)=>{
@@ -158,20 +199,35 @@ app.get('/get-products',(req,res)=>{
 //   })
 // })
 app.get('/get-products/:productid',(req,res)=>{
-  // console.log(req.params,"99");
-  Products.findOne({_id :req.params.productid })
-  .then((result)=>{
-    // console.log('product data....')
-    res.send({message:'milgeeeee',product:result})
-  })
+  Products.findOne({_id: req.params.productid })
+    .then((result)=>{
+      if (!result) {
+        return res.status(404).send({ message: 'Product not found' });
+      }
+      res.send({ message: 'success', product: result })
+    })
     .catch((err)=>{
-    res.send({message:'server err'})
-  })
+      console.error('Get product error:', err);
+      res.status(500).send({ message: 'Server error' })
+    })
+})
+
+app.get('/get-myproducts/:productid',(req,res)=>{
+  Products.findOne({_id: req.params.productid })
+    .then((result)=>{
+      if (!result) {
+        return res.status(404).send({ message: 'Product not found' });
+      }
+      res.send({ message: 'success', product: result })
+    })
+    .catch((err)=>{
+      console.error('Get my product error:', err);
+      res.status(500).send({ message: 'Server error' })
+    })
 })
 
 app.get('/liked-products', (req, res) => {
-  // console.log("UserId", req.headers["x-auth-token"]); 
-  const userId = req.headers["x-auth-token"]; // Retrieve user ID from headers
+  const userId = req.headers["x-auth-token"];
   if (!userId) {
     return res.status(400).send({ message: 'User ID is missing in headers' });
   }
@@ -179,11 +235,13 @@ app.get('/liked-products', (req, res) => {
   Users.findOne({ _id: userId })
     .populate('likedProducts')
     .then((result) => {
-      // console.log('liked data');
+      if (!result) {
+        return res.status(404).send({ message: 'User not found' });
+      }
       res.send({ message: 'Success', products: result });
     })
     .catch((err) => {
-      console.error(err);
+      console.error('Liked products error:', err);
       res.status(500).send({ message: 'Internal server error' });
     });
 });
@@ -247,13 +305,13 @@ app.post('/dislike-products',(req,res)=>{
 })
 
 app.get('/search', (req, res) => {
-  // if (!req.query.loc || !req.query.loc.includes(',')) {
-  //     return res.status(400).json({ error: 'Invalid or missing loc parameter' });
-  // }
-  // let locParts = req.query.loc.split(',');
-  // let latitude = locParts[0];
-  // let longitude = locParts[1];
   let search = req.query.search;
+  
+  // Return empty results if no search term provided
+  if (!search || search.trim() === '') {
+    return res.status(200).json({ message: 'Search successful', products: [] });
+  }
+  
   Products.find({
       $or: [
           { pname: { $regex: search, $options: 'i' } },
@@ -261,14 +319,6 @@ app.get('/search', (req, res) => {
           { pcategory: { $regex: search, $options: 'i' } },
           { price: { $regex: search, $options: 'i' } }
       ]
-      // pLoc: {
-      //     $near: {
-      //         $geometry: {
-      //             type: 'Point',
-      //             coordinates: [parseFloat(longitude), parseFloat(latitude)]
-      //         }
-      //     }
-      // }
   })
   .then((results) => {
       res.status(200).json({ message: 'Search successful', products: results });
@@ -293,51 +343,71 @@ app.get('/my-products', (req, res) => {
 });
 
 app.get('/my-profile/:userId',(req,res)=>{
-//  console.log(req.params,'myyyyyyy');
- let uid = req.params.userId;
- Users.findOne({_id:uid})
- .then((result)=>{
-  res.send({
-      message:'my profile',user:{
-        email:result.email,
-        mobile:result.mobile,
-        username:result.username
+  let uid = req.params.userId;
+  Users.findOne({_id:uid})
+    .then((result)=>{
+      if (!result) {
+        return res.status(404).send({ message: 'User not found' });
       }
-  })
- })
- .catch(()=>{
-  res.send({message:'my-profile errr'})
- })
+      res.send({
+        message:'my profile',
+        user:{
+          email: result.email,
+          mobile: result.mobile,
+          username: result.username
+        }
+      })
+    })
+    .catch((err)=>{
+      console.error('My profile error:', err);
+      res.status(500).send({message:'Error fetching profile'})
+    })
 })
 
 app.get('/get-user/:uId', (req, res) => {
- const _userId = req.params.uId;
+  const _userId = req.params.uId;
   Users.findOne({_id:_userId})
-  .then((result)=>{
-    // console.log(result,'user data')
-   res.send({message:'prod deta contact',user:{username:result.username, email:result.email, mobile:result.mobile}})
-  }).catch(()=>{
-    res.send({message:'contact nhi kr skte'})
-  })
+    .then((result)=>{
+      if (!result) {
+        return res.status(404).send({ message: 'User not found' });
+      }
+      res.send({
+        message:'prod deta contact',
+        user: { username: result.username, email: result.email, mobile: result.mobile }
+      })
+    })
+    .catch((err)=>{
+      console.error('Get user error:', err);
+      res.status(500).send({message:'Error fetching user contact'})
+    })
 })
 
-app.post('/delete-product',(req,res)=>{
-  console.log(req.body);
-  Products.findOne({_id:req.body.pid})
-  .then((result)=>{
-    // console.log('delete data @',result)
-    // res.send({message:'milgeeeee',product:result})
-    if(result.addBy == req.body.userId){
-      Products.deleteOne({_id : req.body.pid})
-      .then((deleteitem)=>{
-          //  console.log(deleteitem);
-          if(deleteitem.acknowledged){res.send({message:"success"})}
-          })
-      .catch((err)=>{alert('Can not delete it')})
+app.post('/delete-product', async (req, res) => {
+  try {
+    const { pid, userId } = req.body;
+    
+    const product = await Products.findOne({ _id: pid });
+    
+    if (!product) {
+      return res.status(404).send({ message: 'Product not found' });
     }
-  }).catch((err)=>{
-    res.send({message:'server000err'})
-  })
+    
+    // Compare ObjectIds properly using toString()
+    if (product.addBy.toString() !== userId) {
+      return res.status(403).send({ message: 'Not authorized to delete this product' });
+    }
+    
+    const deleteResult = await Products.deleteOne({ _id: pid });
+    
+    if (deleteResult.deletedCount > 0) {
+      res.send({ message: 'success' });
+    } else {
+      res.status(500).send({ message: 'Failed to delete product' });
+    }
+  } catch (err) {
+    console.error('Delete product error:', err);
+    res.status(500).send({ message: 'Server error' });
+  }
 })
 
 app.post('/edit-product',upload.fields([{name:"pimage"},{name:"pimage2"}]), (req, res) => {
@@ -373,6 +443,7 @@ if(req.files && req.files.pimage && req.files.pimage.length>0 ){
       res.send({message:'server5252err'})
      })
 })
-app.listen(port, () => {
+
+httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

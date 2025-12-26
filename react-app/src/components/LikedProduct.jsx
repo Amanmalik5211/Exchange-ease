@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Categoriess from './Categoriess';
 import { FaHeart } from "react-icons/fa6";
+import './LikedProduct.css';
 
 
 import './Home.css'
@@ -125,7 +126,7 @@ const handleDislike = (productId) => {
   axios.post(url, data)
     .then((res) => {
       if (res.data.message) {
-        alert("Disliked");
+        // alert("Disliked");
         console.log("Disliked", res.data);
 
         // Update likedproducts state to remove the disliked product
@@ -149,7 +150,7 @@ const handleDislike = (productId) => {
       {cproducts && cproducts.length>0 &&
          cproducts.map((item,index)=>{
            return(
-             <div key={item._id} className='card m-4'>
+             <div key={item._id} className='card m-4 carrdd'>
             <div className='icon-cont'>
                  {likedproducts.find(likedItem => likedItem._id === item._id) ? (
                         <FaHeart onClick={()=>handleDislike(item._id)} className='red-icon'/>) : (
@@ -157,10 +158,9 @@ const handleDislike = (productId) => {
                                    )}
                   </div>            
             <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
-            <p className=' m-2'> {item.pname} | {item.pcategory}</p>
-            <p className=' m-2 price-text'> ₹ {item.price}</p>
-            <p className=' m-2  text-success'> {item.pdesc}</p>
-             </div>
+            <p className='namee-text'> {item.pname} | {item.pcategory}</p>
+            <p className='pricee-text'> ₹ {item.price}</p>
+            <p className='descc'>{item.pdesc.length > 20 ? item.pdesc.substring(0, 35) + '...' : item.pdesc}</p>             </div>
           )
         })
       }
@@ -169,19 +169,17 @@ const handleDislike = (productId) => {
       {products && products.length>0 &&
          products.map((item,index)=>{
           return(
-            <div key={item._id} className='card m-4'>
-
-     <div className='icon-cont'>
+            <div key={item._id} className='card m-4 carrdd'>
+           <div className='icon-cont'>
               {likedproducts.find(likedItem => likedItem._id === item._id) ? (
                         <FaHeart onClick={()=>handleDislike(item._id)} className='red-icon'/>): (
                              <FaHeart className='icon' />
                                    )}
                   </div>           
              <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
-            <p className=' m-2'> {item.pname} | {item.pcategory}</p>
-            <p className=' m-2 price-text'> ₹ {item.price}</p>
-            <p className=' m-2  text-success'> {item.pdesc}</p>
-             </div>
+            <p className='namee-text'> {item.pname} | {item.pcategory}</p>
+            <p className='pricee-text'> ₹ {item.price}</p>
+            <p className='descc'>{item.pdesc.length > 20 ? item.pdesc.substring(0, 35) + '...' : item.pdesc}</p>             </div>
           )
          })
       }

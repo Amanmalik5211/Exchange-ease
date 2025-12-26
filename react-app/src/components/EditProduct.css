@@ -1,0 +1,48 @@
+.containerr{
+    background-color: rgb(182, 177, 177);
+    width: 650px;
+    height: 650px;
+   margin-left: 100px;
+   margin-top: 12px;
+/* margin-right: 50px; */
+}
+.containerr input {
+    background-color: rgb(254, 254, 255);
+    border: 2px solid black;
+}
+.containerr select {
+    background-color: rgb(254, 254, 255);
+    border: 2px solid black;
+}
+.containerr label{
+    padding-top: 8px;
+    color: rgb(0, 0, 0);
+    font-size: 22px;
+    font-weight: 529;
+    font-family: 'Times New Roman', Times, serif;
+}
+.mini-container{
+    padding: 11px;
+}
+
+
+.box{
+    display: flex;
+  align-items: center; 
+}
+.edit-image {
+    width: 600px; /* Set the width of the container */
+    height: 400px; /* Set the height of the container */
+    overflow: hidden; /* Ensure content that exceeds the container's bounds is hidden */
+    display: inline-block; /* Display the div as inline block */
+    /* background-color: rgb(72, 255, 0); Just for demonstration */
+    margin-left: 70px;
+    margin-top: 45px;
+  }
+  
+  .edit-image img {
+    width: 600px; /* Ensure the image takes up 100% of the div's width */
+    height: 300px; /* Allow the height to adjust according to the width while maintaining aspect ratio */
+    display: block; /* Make the image a block element */
+  }
+  

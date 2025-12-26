@@ -4,15 +4,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Categoriess from './Categoriess';
 import { FaHeart } from "react-icons/fa6";
-import './Home.css'
+import './MyProduct.css'
 
 const MyProducts = () => {
   // const navigate = useNavigate();
   const [products,setProducts] = useState([]);
   const [cproducts,setCproducts] = useState([]);
   const [search,setSearch] = useState('');
-
-
+  const navigate = useNavigate();
   // useEffect(()=>{
   //   if(!localStorage.getItem('token')){
   //     navigate('/login')
@@ -100,38 +99,42 @@ axios.post(url,data)
   alert('error in products')
  })
 }
+
+
+const handleProducts= (id)=>{
+  navigate('/myproduct/'+id)
+}
   return (
     <div>
       <Header search={search} handleSearch={handleSearch} handleClick={handleClick}/>
       <Categoriess handleCategory = {handleCategory}/>
-      <div className='d-flex justify-content-center flex-wrap'>
-      {cproducts && cproducts.length>0 &&
-         cproducts.map((item,index)=>{
-           return(
-             <div key={item._id} className='card m-4'>
-              <div onClick={()=>handleLike(item._id)} className='icon-cont'><FaHeart className='icon'/></div>
-            <img width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
-            <p className=' m-2'> {item.pname} | {item.pcategory}</p>
-            <p className=' m-2 price-text'> ₹ {item.price}</p>
-            <p className=' m-2  text-success'> {item.pdesc}</p>
-             </div>
-          )
-        })
-      }
-      </div>
+        {/* <div className='d-flex justify-content-center flex-wrap'>
+        {cproducts && cproducts.length>0 &&
+          cproducts.map((item,index)=>{
+            return(
+              <div key={item._id} className='card m-4 mycard'>
+                <div onClick={()=>handleLike(item._id)} className='icon-cont'><FaHeart className='icon'/></div>
+                <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
+              <p className=' myname'> {item.pname} | {item.pcategory}</p>
+              <p className=' myprice'> ₹ {item.price}</p>
+              <p className='mydesc'>{item.pdesc.length > 20 ? item.pdesc.substring(0, 35) + '...' : item.pdesc}</p><p className=' m-2  text-success'> {item.pdesc}</p>
+              </div>
+            )
+          })
+        }
+        </div> */}
       <div className='d-flex justify-content-center flex-wrap'>
       {products && products.length>0 &&
          products.map((item,index)=>{
           return(
-            <div key={item._id} className='card m-4'>
-
+            <div key={item._id} className='card m-4 mycard'>
               <div  onClick={()=>handleLike(item._id)} className='icon-cont'><FaHeart className='icon'/></div>
-            <img width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
-            <p className=' m-2'> {item.pname} | {item.pcategory}</p>
-            <p className=' m-2 price-text'> ₹ {item.price}</p>
-            <p className=' m-2  text-success'> {item.pdesc}</p>
-            <Link to={`/edit-product/${item._id}`}>Edit Product</Link>
-            <button onClick={()=>handledelete(item._id)}>Delete Product</button>
+              <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
+            <p className='myname'> {item.pname} | {item.pcategory}</p>
+            <p className='myprice'> ₹ {item.price}</p>
+            <p className='mydesc'>{item.pdesc.length > 20 ? item.pdesc.substring(0, 35) + '...' : item.pdesc}</p>            
+            <div className='edit'><a href={`/edit-product/${item._id}`}>Edit Product</a></div>
+            <button className='delete' onClick={()=>handledelete(item._id)}>Delete Product</button>
              </div>
           )
          })
