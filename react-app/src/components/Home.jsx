@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Header from './Header'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Categoriess from './Categoriess';
 import { FaHeart } from "react-icons/fa6";
 import './Home.css'
+import { toast } from 'react-toastify';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -97,8 +98,10 @@ axios.get(url2, {
       return item;
       // console.log(item);
     }
+    return false;
   })
-     setCproducts(filteredProducts)
+     setCproducts(filteredProducts);
+     setIssearch(true);
   }
 
 
@@ -106,7 +109,7 @@ axios.get(url2, {
    let userId = localStorage.getItem("userId");
   //  console.log(userId,productId,"uuuu");
    if(!userId){
-    alert(' Please login first');
+    toast.error('Please login first to like products');
     return;
    }
     const url = "http://localhost:5000/like-products";
@@ -114,13 +117,13 @@ axios.get(url2, {
    axios.post(url,data)
    .then((res)=>{
     if(res.data.message){
-      // alert("liked")
+      toast.success('Product added to favorites!');
       setRefresh(!refresh);
     }
    })
    .catch((err)=>{
     console.log(err)
-    alert('error..in products')
+    toast.error('Failed to like product. Please try again.');
    })
   
 }
@@ -129,7 +132,7 @@ const handleDislike =(productId)=>{
   let userId = localStorage.getItem("userId");
  //  console.log(userId,productId,"uuuu");
   if(!userId){
-   alert(' Please login first');
+   toast.error('Please login first to unlike products');
    return;
   }
    const url = "http://localhost:5000/dislike-products";
@@ -137,13 +140,13 @@ const handleDislike =(productId)=>{
   axios.post(url,data)
   .then((res)=>{
    if(res.data.message){
-    //  alert("disliked")
+     toast.success('Product removed from favorites!');
      setRefresh(!refresh);
    }
   })
   .catch((err)=>{
    console.log(err)
-   alert('error..in products')
+   toast.error('Failed to unlike product. Please try again.');
   })
  
 }
@@ -159,63 +162,112 @@ const handleProducts= (id)=>{
 }
 
   return (
-    <div>
+    <div className='home-page'>
       <Header search={search} handleSearch={handleSearch} handleClick={handleClick}/>
       <Categoriess handleCategory = {handleCategory}/>
 
-      {issearch && cproducts && cproducts.length > 0 && <h3 className='search-result'>Search Results
-        <button className='clear-btn' onClick={handelclear}>Clear</button>
-        </h3>}
-      {issearch && cproducts && cproducts.length === 0 && <h3 className='search-noresult'>No Result Found</h3>}
+     
+      {issearch && cproducts && cproducts.length > 0 && (
+        <h3 className='search-result'>
+          Search Results
+          <button className='clear-btn' onClick={handelclear}>Clear</button>
+        </h3>
+      )}
+      
+      {issearch && cproducts && cproducts.length === 0 && (
+        <div className='search-noresult'>
+          <div className='empty-state-text'>No products found</div>
+          <p style={{fontSize: '14px', marginTop: '10px', color: '#9ca3af'}}>Try different search terms or browse all categories</p>
+        </div>
+      )}
 
-     {issearch && <div className='d-flex justify-content-center flex-wrap'>
-      {cproducts && cproducts.length>0 &&
-         cproducts.map((item,index)=>{
-           return(
-             <div key={item._id} className='card m-4  cardd'>
-              <div className='icon-cont'>
-              {likedproducts.find(likedItem => likedItem._id === item._id) ? (
-                      <FaHeart onClick={()=>handleDislike(item._id)} className='red-icon'/>) : (
-                      <FaHeart onClick={() => handleLike(item._id)} className='icon' />)}
-                        </div>
-
-            <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
-            <div className='card-content'>
-              <span className='category-badge'>{item.pcategory}</span>
-              <h3 className='name-text'>{item.pname}</h3>
-              <p className='price-text'>₹{item.price}</p>
-              <p className='desc'>{item.pdesc.length > 50 ? item.pdesc.substring(0, 50) + '...' : item.pdesc}</p>
-            </div>
-
-             </div>
-          )
-        })
-      }
-      </div>}
-
-      {!issearch && <div className='d-flex justify-content-center flex-wrap'>
-      {products && products.length>0 &&
-         products.map((item,index)=>{
-          return(
-            <div key={item._id} className='card m-4 cardd'>
-              <div  className='icon-cont'>
-              {likedproducts.find(likedItem => likedItem._id === item._id) ? (
-                       <FaHeart onClick={()=>handleDislike(item._id)} className='red-icon'/>) : (
-                             <FaHeart onClick={()=>handleLike(item._id)} className='icon' />
-                                   )}
+      {issearch && (
+        <div className='products-container'>
+          {cproducts && cproducts.length > 0 &&
+            cproducts.map((item, index) => {
+              return (
+                <div key={item._id} className='cardd' style={{animationDelay: `${index * 0.1}s`}}>
+                  <div className='icon-cont'>
+                    {likedproducts.find(likedItem => likedItem._id === item._id) ? (
+                      <FaHeart onClick={() => handleDislike(item._id)} className='red-icon' />
+                    ) : (
+                      <FaHeart onClick={() => handleLike(item._id)} className='icon' />
+                    )}
                   </div>
-            <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
-            <div className='card-content'>
-              <span className='category-badge'>{item.pcategory}</span>
-              <h3 className='name-text'>{item.pname}</h3>
-              <p className='price-text'>₹{item.price}</p>
-              <p className='desc'>{item.pdesc.length > 50 ? item.pdesc.substring(0, 50) + '...' : item.pdesc}</p>
+
+                  <img 
+                    onClick={() => handleProducts(item._id)} 
+                    className='product-image' 
+                    src={'http://localhost:5000/' + item.pimage} 
+                    alt={item.pname}
+                  />
+                  <div className='card-content'>
+                    <span className='category-badge'>{item.pcategory}</span>
+                    <h3 className='name-text'>{item.pname}</h3>
+                    <p className='price-text'>{item.price}</p>
+                    <p className='desc'>{item.pdesc}</p>
+                    <button 
+                      className='view-details-btn'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleProducts(item._id);
+                      }}
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              )
+            })
+          }
+        </div>
+      )}
+
+      {!issearch && (
+        <div className='products-container'>
+          {products && products.length > 0 ? (
+            products.map((item, index) => {
+              return (
+                <div key={item._id} className='cardd' style={{animationDelay: `${index * 0.05}s`}}>
+                  <div className='icon-cont'>
+                    {likedproducts.find(likedItem => likedItem._id === item._id) ? (
+                      <FaHeart onClick={() => handleDislike(item._id)} className='red-icon' />
+                    ) : (
+                      <FaHeart onClick={() => handleLike(item._id)} className='icon' />
+                    )}
+                  </div>
+                  <img 
+                    onClick={() => handleProducts(item._id)} 
+                    className='product-image' 
+                    src={'http://localhost:5000/' + item.pimage} 
+                    alt={item.pname}
+                  />
+                  <div className='card-content'>
+                    <span className='category-badge'>{item.pcategory}</span>
+                    <h3 className='name-text'>{item.pname}</h3>
+                    <p className='price-text'>{item.price}</p>
+                    <p className='desc'>{item.pdesc}</p>
+                    <button 
+                      className='view-details-btn'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleProducts(item._id);
+                      }}
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              )
+            })
+          ) : (
+            <div className='empty-state'>
+              <div className='empty-state-text'>No products available</div>
+              <p style={{fontSize: '14px', marginTop: '10px', color: '#9ca3af'}}>Be the first to add a product!</p>
             </div>
-             </div>
-          )
-         })
-      }
-      </div>}
+          )}
+        </div>
+      )}
     </div>
   )
   

@@ -1,64 +1,220 @@
-.mycard{
-    background-color: #f6f9fa;
-    border: none;
-    /* border-radius: px; */
-  }
-  .mycard:hover{
-    /* border: 2px solid rgb(252, 254, 254);  */
-    background-color: #b8e7f7;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-  .myname{
-    padding-left: 6.5px;
-    color: rgb(0, 0, 0);
-    font-size: 21.5px;
-    font-weight: 500;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+.mycard {
+  background-color: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInUp 0.5s ease-out;
+  justify-self: center;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  .myprice{
-    padding-left: 6.5px;
-    color: #002f34;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size: 18px;
-    font-weight:480;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.mydesc{
-  padding-left: 6.5px;
-  font-size:15.5px;
-  color: black;
-  font-weight: 350;
+
+.mycard:hover {
+  border-color: #e5e7eb;
+  background-color: #ffffff;
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
 }
-.delete{
-    background-color: rgb(184, 76, 30);
-    color: #f1f5f7;
-    font-size:22px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    border: 2.5px solid black;
-    overflow: hidden; /* Prevents text overflow */
-    word-wrap: break-word;
-    height: 38px;
+
+.mycard img,
+.mycard .product-image {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  object-position: center;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  padding: 10px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  margin: 0;
 }
-.delete:hover{
-    color: rgb(240, 21, 6);
-    background-color: rgb(216, 102, 90);
+
+.mycard:hover img,
+.mycard:hover .product-image {
+  transform: scale(1.08);
 }
+
+/* Card Content Container */
+.mycard .card-content {
+  padding: 18px 18px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+}
+
+/* Category Badge */
+.mycard .category-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  width: fit-content;
+  margin-bottom: 2px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.mycard:hover .category-badge {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.myname {
+  color: #1a1a1a;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 48px;
+}
+
+.myprice {
+  color: #dc2626;
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.myprice::before {
+  content: '₹';
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.mydesc {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.delete {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  border: none;
+  border-radius: 0 0 14px 14px;
+  overflow: hidden;
+  word-wrap: break-word;
+  height: 44px;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.delete:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.delete:active {
+  transform: translateY(0);
+}
+
 .edit {
-    background-color: rgb(184, 76, 30);
-    border: 2.5px solid black;
-    margin-bottom: 5px;
-}
-.edit a {
-    color: rgb(254, 254, 254);
-    text-decoration: none;
-    font-size:22px ;
-    padding-left: 84px;
-}
-.edit:hover {
-    background-color: rgb(110, 107, 106);
-    border: 2.5px solid rgb(0, 0, 0);
-}
-.edit a:hover {
-    color: rgb(16, 74, 5);
-    text-decoration: none;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: none;
+  margin: 0;
+  border-radius: 0;
+  transition: all 0.3s ease;
 }
 
+.edit a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  padding: 14px;
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.edit:hover {
+  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+}
+
+.edit a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Additional Card Enhancements */
+.mycard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.mycard:hover::before {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mycard {
+    width: 100%;
+    max-width: 100%;
+  }
+}

@@ -129,10 +129,13 @@ const handleProducts= (id)=>{
           return(
             <div key={item._id} className='card m-4 mycard'>
               <div  onClick={()=>handleLike(item._id)} className='icon-cont'><FaHeart className='icon'/></div>
-              <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
-            <p className='myname'> {item.pname} | {item.pcategory}</p>
-            <p className='myprice'> ₹ {item.price}</p>
-            <p className='mydesc'>{item.pdesc.length > 20 ? item.pdesc.substring(0, 35) + '...' : item.pdesc}</p>            
+              <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
+            <div className='card-content'>
+              <span className='category-badge'>{item.pcategory}</span>
+              <h3 className='myname'>{item.pname}</h3>
+              <p className='myprice'>₹{item.price}</p>
+              <p className='mydesc'>{item.pdesc.length > 50 ? item.pdesc.substring(0, 50) + '...' : item.pdesc}</p>
+            </div>            
             <div className='edit'><a href={`/edit-product/${item._id}`}>Edit Product</a></div>
             <button className='delete' onClick={()=>handledelete(item._id)}>Delete Product</button>
              </div>

@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Categoriess from './Categoriess';
 import Pcategory from './Pcategory';
-import ADD from './ADD.png'
 import './AddProduct.css'
+import { toast } from 'react-toastify';
 const AddProduct = () => {
   const navigate = useNavigate();
   const[pname,setPname]=useState('');
@@ -40,12 +40,13 @@ const handleProduct = ()=>{
         .then((res) => {
             console.log(res);
             if(res.data.message){
-              alert(res.data.message);
+              toast.success('Product added successfully!');
               navigate('/');
             }
         })
         .catch((err) => {
             console.log(err);
+            toast.error('Failed to add product. Please try again.');
         });
   })
 }
@@ -55,7 +56,27 @@ const handleProduct = ()=>{
     <div>
       <Header/>
       <div className='add-box'>
-      <div className='add-image'> <img src={ADD} alt="Add Product" /></div>
+      <div className='add-text-section'>
+        <div className='add-text-wrapper'>
+          <h1 className='add-main-title'>ADD</h1>
+          <h1 className='add-main-title'>PRODUCT</h1>
+          <p className='add-subtitle'>Create your listing and reach thousands of buyers</p>
+          <div className='add-features'>
+            <div className='add-feature-item'>
+              <span className='add-feature-icon'>✓</span>
+              <span>Easy & Quick Setup</span>
+            </div>
+            <div className='add-feature-item'>
+              <span className='add-feature-icon'>✓</span>
+              <span>Multiple Image Upload</span>
+            </div>
+            <div className='add-feature-item'>
+              <span className='add-feature-icon'>✓</span>
+              <span>Instant Listing</span>
+            </div>
+          </div>
+        </div>
+      </div>
     <div className='add-containerr'>
       <div className="miniadd-containerr">
         <label>Product Name</label>

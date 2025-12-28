@@ -366,19 +366,28 @@ app.get('/my-profile/:userId',(req,res)=>{
 
 app.get('/get-user/:uId', (req, res) => {
   const _userId = req.params.uId;
-  Users.findOne({_id:_userId})
+  
+  if (!_userId) {
+    return res.status(400).send({ message: 'User ID is required' });
+  }
+  
+  Users.findOne({_id: _userId})
     .then((result)=>{
       if (!result) {
         return res.status(404).send({ message: 'User not found' });
       }
       res.send({
-        message:'prod deta contact',
-        user: { username: result.username, email: result.email, mobile: result.mobile }
+        message: 'prod deta contact',
+        user: { 
+          username: result.username, 
+          email: result.email, 
+          mobile: result.mobile 
+        }
       })
     })
     .catch((err)=>{
       console.error('Get user error:', err);
-      res.status(500).send({message:'Error fetching user contact'})
+      res.status(500).send({ message: 'Error fetching user contact' })
     })
 })
 

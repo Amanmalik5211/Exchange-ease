@@ -5,7 +5,7 @@ import axios from 'axios';
 import Categoriess from './Categoriess';
 import Pcategory from './Pcategory';
 import './EditProduct.css';
-import EDIT from './EDIT.png'
+import { toast } from 'react-toastify';
 const EditProduct = () => {
     const params =useParams()
   console.log(params.pid,"params");
@@ -91,12 +91,13 @@ const handleProduct = ()=>{
         .then((res) => {
             console.log(res);
             if(res.data.message){
-              alert(res.data.message);
+              toast.success('Product updated successfully!');
               navigate('/my-products');
             }
         })
         .catch((err) => {
             console.log(err);
+            toast.error('Failed to update product. Please try again.');
         });
 }
 
@@ -105,7 +106,27 @@ const handleProduct = ()=>{
     <div>
       <Header/>
       <div className='box'>
-    <div className='edit-image'> <img src={EDIT} alt="Edit Product" /></div>
+    <div className='edit-text-section'>
+        <div className='edit-text-wrapper'>
+          <h1 className='edit-main-title'>EDIT</h1>
+          <h1 className='edit-main-title'>PRODUCT</h1>
+          <p className='edit-subtitle'>Update your listing details and keep it fresh</p>
+          <div className='edit-features'>
+            <div className='edit-feature-item'>
+              <span className='edit-feature-icon'>✓</span>
+              <span>Update Anytime</span>
+            </div>
+            <div className='edit-feature-item'>
+              <span className='edit-feature-icon'>✓</span>
+              <span>Change Images</span>
+            </div>
+            <div className='edit-feature-item'>
+              <span className='edit-feature-icon'>✓</span>
+              <span>Modify Details</span>
+            </div>
+          </div>
+        </div>
+      </div>
     <div className='containerr'>
       <div className='mini-container'>
         <label>Product Name</label>

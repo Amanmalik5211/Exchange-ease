@@ -3,6 +3,7 @@ import './SignUp.css';
 import { Link, useNavigate } from 'react-router-dom';
 import logo2 from './logo2.png';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function Signup() {
   const navigate = useNavigate();
@@ -22,14 +23,15 @@ function Signup() {
     axios.post(url, data)
       .then((res) => {
         if (res.data.message === 'saved user') {
+          toast.success('Account created successfully! Please login to continue.');
           navigate("/login");
         } else {
-          alert(res.data.message);
+          toast.error(res.data.message);
         }
       })
       .catch((err) => {
         console.error(err);
-        alert('Server error');
+        toast.error('Server error. Please try again.');
       })
       .finally(() => {
         setIsLoading(false);

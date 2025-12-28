@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import './Login.css';
 import logo2 from './logo2.png'
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function Login() {
   const navigate = useNavigate();
@@ -23,16 +24,17 @@ function Login() {
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('userId', res.data.userId);
           localStorage.setItem('userName', res.data.username);
+          toast.success('Login successful! Welcome back!');
           navigate("/");
         } else if (res.data.message) {
-          alert(res.data.message);
+          toast.error(res.data.message);
         } else {
-          alert("Unexpected response from server.");
+          toast.error("Unexpected response from server.");
         }
       })
       .catch((err) => {
         console.error(err);
-        alert('Server error, please try again later.');
+        toast.error('Server error, please try again later.');
       })
       .finally(() => {
         setIsLoading(false);

@@ -5,9 +5,8 @@ import axios from 'axios';
 import Categoriess from './Categoriess';
 import { FaHeart } from "react-icons/fa6";
 import './LikedProduct.css';
-
-
 import './Home.css'
+import { toast } from 'react-toastify';
 const LikedProduct = () => {
 
   const navigate = useNavigate();
@@ -116,7 +115,7 @@ const handleProducts= (id)=>{
 const handleDislike = (productId) => {
   let userId = localStorage.getItem("userId");
   if (!userId) {
-    alert('Please login first');
+    toast.error('Please login first to unlike products');
     return;
   }
 
@@ -126,7 +125,7 @@ const handleDislike = (productId) => {
   axios.post(url, data)
     .then((res) => {
       if (res.data.message) {
-        // alert("Disliked");
+        toast.success('Product removed from favorites!');
         console.log("Disliked", res.data);
 
         // Update likedproducts state to remove the disliked product
@@ -138,7 +137,7 @@ const handleDislike = (productId) => {
     })
     .catch((err) => {
       console.log(err);
-      alert('Error in disliking product');
+      toast.error('Failed to remove product from favorites. Please try again.');
     });
 }
 
@@ -157,10 +156,13 @@ const handleDislike = (productId) => {
                              <FaHeart className='icon' />
                                    )}
                   </div>            
-            <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
-            <p className='namee-text'> {item.pname} | {item.pcategory}</p>
-            <p className='pricee-text'> ₹ {item.price}</p>
-            <p className='descc'>{item.pdesc.length > 20 ? item.pdesc.substring(0, 35) + '...' : item.pdesc}</p>             </div>
+            <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
+            <div className='card-content'>
+              <span className='category-badge'>{item.pcategory}</span>
+              <h3 className='namee-text'>{item.pname}</h3>
+              <p className='pricee-text'>₹{item.price}</p>
+              <p className='descc'>{item.pdesc.length > 50 ? item.pdesc.substring(0, 50) + '...' : item.pdesc}</p>
+            </div>             </div>
           )
         })
       }
@@ -176,10 +178,13 @@ const handleDislike = (productId) => {
                              <FaHeart className='icon' />
                                    )}
                   </div>           
-             <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
-            <p className='namee-text'> {item.pname} | {item.pcategory}</p>
-            <p className='pricee-text'> ₹ {item.price}</p>
-            <p className='descc'>{item.pdesc.length > 20 ? item.pdesc.substring(0, 35) + '...' : item.pdesc}</p>             </div>
+             <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
+            <div className='card-content'>
+              <span className='category-badge'>{item.pcategory}</span>
+              <h3 className='namee-text'>{item.pname}</h3>
+              <p className='pricee-text'>₹{item.price}</p>
+              <p className='descc'>{item.pdesc.length > 50 ? item.pdesc.substring(0, 50) + '...' : item.pdesc}</p>
+            </div>             </div>
           )
          })
       }

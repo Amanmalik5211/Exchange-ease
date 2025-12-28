@@ -7,6 +7,9 @@ import {
   Route,
   Link,
 } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './components/Toast.css';
 import Home from './components/Home';
 import Login from './components/Login';
 import Singup from './components/Signup';
@@ -66,5 +69,19 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <>
+    <RouterProvider router={router} />
+    <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+    />
+  </>
   );
