@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Header from "./Header";
 import io from "socket.io-client";
 import "./ProductDetail.css";
+import { API_ENDPOINTS, SOCKET_CONFIG, getImageUrl } from '../config/api';
 
 const ProductDetail = () => {
   const params = useParams();
@@ -50,7 +51,7 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
-    const socketInstance = io("http://localhost:5000");
+    const socketInstance = io(SOCKET_CONFIG.URL, SOCKET_CONFIG.OPTIONS);
     socketInstance.on("connect", () => {
       console.log("Connected to server");
       setSocket(socketInstance);
@@ -60,7 +61,7 @@ const ProductDetail = () => {
   // Only recreate socket when product changes, not when msgs changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    const socketInstance = io("http://localhost:5000");
+    const socketInstance = io(SOCKET_CONFIG.URL, SOCKET_CONFIG.OPTIONS);
     socketInstance.on("getMsg", (data) => {
       if (product && product._id) {
         const _data = data.filter((item, index) => {
@@ -102,7 +103,7 @@ const ProductDetail = () => {
   }, [product?._id]); // Only run when product changes, not when msgs changes
 
   useEffect(() => {
-    const url = "http://localhost:5000/get-products/" + params.productid;
+    const url = API_ENDPOINTS.GET_PRODUCT_BY_ID(params.productid);
     axios
       .get(url)
       .then((res) => {
@@ -114,7 +115,7 @@ const ProductDetail = () => {
             const userId = typeof res.data.product.addBy === 'object' 
               ? res.data.product.addBy.toString() 
               : res.data.product.addBy;
-            const userUrl = "http://localhost:5000/get-user/" + userId;
+            const userUrl = API_ENDPOINTS.GET_USER(userId);
             axios
               .get(userUrl)
               .then((userRes) => {
@@ -146,7 +147,7 @@ const ProductDetail = () => {
             <div className="main-image-wrapper">
               <img
                 className="main-image"
-                src={"http://localhost:5000/" + product.pimage}
+                src={getImageUrl(product.pimage)}
                 alt={product.pname}
               />
             </div>
@@ -154,7 +155,7 @@ const ProductDetail = () => {
               <div className="secondary-image-wrapper">
                 <img
                   className="secondary-image"
-                  src={"http://localhost:5000/" + product.pimage2}
+                  src={getImageUrl(product.pimage2)}
                   alt={product.pname + " - View 2"}
                 />
               </div>
@@ -178,20 +179,7 @@ const ProductDetail = () => {
               <p className="product-description">{product.pdesc}</p>
             </div>
 
-            <div className="product-specs-section">
-              <h3 className="section-title">Product Information</h3>
-              <div className="specs-grid">
-                <div className="spec-item">
-                  <span className="spec-label">Category</span>
-                  <span className="spec-value">{product.pcategory}</span>
-                </div>
-                <div className="spec-item">
-                  <span className="spec-label">Product ID</span>
-                  <span className="spec-value">{product._id.slice(-8)}</span>
-                </div>
-              </div>
-            </div>
-
+        
             {product.addBy && (
               <div className="contact-section">
                 <div className="contact-info-card">
@@ -262,7 +250,6 @@ const ProductDetail = () => {
                 })
               ) : (
                 <div className="no-messages">
-                  <span className="no-messages-icon">💭</span>
                   <p className="no-messages-title">No messages yet</p>
                   <p className="no-messages-desc">Be the first to start the conversation! All interested buyers can see and reply to messages here.</p>
                 </div>

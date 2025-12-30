@@ -5,6 +5,7 @@ import axios from 'axios';
 import Categoriess from './Categoriess';
 import { FaHeart } from "react-icons/fa6";
 import './MyProduct.css'
+import { API_ENDPOINTS, getImageUrl } from '../config/api';
 
 const MyProducts = () => {
   // const navigate = useNavigate();
@@ -20,7 +21,7 @@ const MyProducts = () => {
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    const url = `http://localhost:5000/my-products?userId=${userId}`;
+    const url = API_ENDPOINTS.MY_PRODUCTS(userId);
   // console.log(userId,'***')
     axios.get(url)
       .then((res) => {
@@ -65,7 +66,7 @@ const MyProducts = () => {
  const handleLike =(productId)=>{
    let userId = localStorage.getItem("userId");
    console.log(userId,productId,"uuuu");
-    const url = "http://localhost:5000/like-products";
+    const url = API_ENDPOINTS.LIKE_PRODUCT;
     const data = {userId,productId}
    axios.post(url,data)
    .then((res)=>{
@@ -80,7 +81,7 @@ const MyProducts = () => {
 }
 
 const handledelete=(pid)=>{
-const url = "http://localhost:5000/delete-product";
+const url = API_ENDPOINTS.DELETE_PRODUCT;
 const userId =localStorage.getItem('userId')
 const data = {userId,pid}
 if(!userId){
@@ -114,7 +115,7 @@ const handleProducts= (id)=>{
             return(
               <div key={item._id} className='card m-4 mycard'>
                 <div onClick={()=>handleLike(item._id)} className='icon-cont'><FaHeart className='icon'/></div>
-                <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={'http://localhost:5000/' + item.pimage}/>
+                <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={getImageUrl(item.pimage)}/>
               <p className=' myname'> {item.pname} | {item.pcategory}</p>
               <p className=' myprice'> ₹ {item.price}</p>
               <p className='mydesc'>{item.pdesc.length > 20 ? item.pdesc.substring(0, 35) + '...' : item.pdesc}</p><p className=' m-2  text-success'> {item.pdesc}</p>
@@ -129,7 +130,7 @@ const handleProducts= (id)=>{
           return(
             <div key={item._id} className='card m-4 mycard'>
               <div  onClick={()=>handleLike(item._id)} className='icon-cont'><FaHeart className='icon'/></div>
-              <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
+              <img onClick = {()=>handleProducts(item._id)} className='product-image' src={getImageUrl(item.pimage)} alt={item.pname}/>
             <div className='card-content'>
               <span className='category-badge'>{item.pcategory}</span>
               <h3 className='myname'>{item.pname}</h3>

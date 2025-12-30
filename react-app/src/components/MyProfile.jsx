@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from './Header';
 import './MyDetails.css';
+import { API_ENDPOINTS } from '../config/api';
 
 const MyProfile = () => {
     const [user, setUser] = useState(null);
@@ -9,7 +10,7 @@ const MyProfile = () => {
 
     const handleDelete = async (productId) => {
         try {
-          await axios.delete(`http://localhost:5000/products/${productId}`);
+          await axios.delete(API_ENDPOINTS.DELETE_PRODUCT);
           setProduct(product.filter(product => product._id !== productId));
           console.log('Product deleted successfully');
         } catch (error) {
@@ -19,7 +20,7 @@ const MyProfile = () => {
 
     useEffect(() => {
         const userId = localStorage.getItem("userId");
-        const url = `http://localhost:5000/my-profile/${userId}`;
+        const url = API_ENDPOINTS.MY_PROFILE(userId);
 
         axios.get(url)
             .then((res) => {

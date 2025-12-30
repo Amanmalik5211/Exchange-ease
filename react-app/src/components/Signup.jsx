@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo2 from './logo2.png';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS } from '../config/api';
 
 function Signup() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function Signup() {
     e.preventDefault();
     setIsLoading(true);
     
-    const url = 'http://localhost:5000/signup';
+    const url = API_ENDPOINTS.SIGNUP;
     const data = { username, email, password, mobile };
 
     axios.post(url, data)

@@ -10,6 +10,7 @@ import {
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './components/Toast.css';
+import { TOAST_CONFIG } from './config/api';
 import Home from './components/Home';
 import Login from './components/Login';
 import Singup from './components/Signup';
@@ -72,8 +73,8 @@ createRoot(document.getElementById("root")).render(
   <>
     <RouterProvider router={router} />
     <ToastContainer
-      position="top-right"
-      autoClose={3000}
+      position={TOAST_CONFIG.POSITION}
+      autoClose={TOAST_CONFIG.AUTO_CLOSE}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick

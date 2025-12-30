@@ -6,6 +6,7 @@ import Categoriess from './Categoriess';
 import Pcategory from './Pcategory';
 import './AddProduct.css'
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS } from '../config/api';
 const AddProduct = () => {
   const navigate = useNavigate();
   const[pname,setPname]=useState('');
@@ -35,7 +36,7 @@ const handleProduct = ()=>{
     formData.append('pimage2', pimage2);
     formData.append('userId', localStorage.getItem('userId'));
 
-    const url = 'http://localhost:5000/add-product'; 
+    const url = API_ENDPOINTS.ADD_PRODUCT; 
     axios.post(url, formData)
         .then((res) => {
             console.log(res);

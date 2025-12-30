@@ -6,6 +6,7 @@ import Categoriess from './Categoriess';
 import { FaHeart } from "react-icons/fa6";
 import './Home.css'
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS, getImageUrl } from '../config/api';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Home = () => {
   // },[])
 
   useEffect(()=>{
-    const url = "http://localhost:5000/get-products";
+    const url = API_ENDPOINTS.GET_PRODUCTS;
    axios.get(url)
    .then((res)=>{
     // console.log(res);
@@ -37,7 +38,7 @@ const Home = () => {
     alert('error78in products')
    })
 
-   const url2 = "http://localhost:5000/liked-products";
+   const url2 = API_ENDPOINTS.LIKED_PRODUCTS;
 const userId = localStorage.getItem('userId');
 // console.log(us`erId,"polo");
 axios.get(url2, {
@@ -63,7 +64,7 @@ axios.get(url2, {
   }
 
   const handleClick = () => {
-    const url = "http://localhost:5000/search?search=" + search;
+    const url = API_ENDPOINTS.SEARCH_PRODUCTS(search);
     axios.get(url)
         .then((res) => {
             // console.log(res.data,"pprrooducts");
@@ -112,7 +113,7 @@ axios.get(url2, {
     toast.error('Please login first to like products');
     return;
    }
-    const url = "http://localhost:5000/like-products";
+    const url = API_ENDPOINTS.LIKE_PRODUCT;
     const data = {userId,productId}
    axios.post(url,data)
    .then((res)=>{
@@ -135,7 +136,7 @@ const handleDislike =(productId)=>{
    toast.error('Please login first to unlike products');
    return;
   }
-   const url = "http://localhost:5000/dislike-products";
+   const url = API_ENDPOINTS.DISLIKE_PRODUCT;
    const data = {userId,productId}
   axios.post(url,data)
   .then((res)=>{
@@ -198,7 +199,7 @@ const handleProducts= (id)=>{
                   <img 
                     onClick={() => handleProducts(item._id)} 
                     className='product-image' 
-                    src={'http://localhost:5000/' + item.pimage} 
+                    src={getImageUrl(item.pimage)} 
                     alt={item.pname}
                   />
                   <div className='card-content'>
@@ -239,7 +240,7 @@ const handleProducts= (id)=>{
                   <img 
                     onClick={() => handleProducts(item._id)} 
                     className='product-image' 
-                    src={'http://localhost:5000/' + item.pimage} 
+                    src={getImageUrl(item.pimage)} 
                     alt={item.pname}
                   />
                   <div className='card-content'>

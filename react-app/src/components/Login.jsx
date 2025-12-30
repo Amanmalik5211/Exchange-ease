@@ -4,6 +4,7 @@ import './Login.css';
 import logo2 from './logo2.png'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS } from '../config/api';
 
 function Login() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function Login() {
     e.preventDefault();
     setIsLoading(true);
     
-    const url = 'http://localhost:5000/login';
+    const url = API_ENDPOINTS.LOGIN;
     const data = { email, password };
 
     axios.post(url, data)

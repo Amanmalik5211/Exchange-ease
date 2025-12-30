@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import './Home.css';
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS, getImageUrl } from '../config/api';
 
 const CategoryPage = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const CategoryPage = () => {
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    const url = "http://localhost:5000/get-products?catName=" + params.catName;
+    const url = API_ENDPOINTS.GET_PRODUCTS_BY_CATEGORY(params.catName);
     axios.get(url)
       .then((res) => {
         console.log(res);
@@ -31,7 +32,7 @@ const CategoryPage = () => {
         alert('error in products');
       });
 
-    const url2 = "http://localhost:5000/liked-products";
+    const url2 = API_ENDPOINTS.LIKED_PRODUCTS;
     const userId = localStorage.getItem('userId');
     if (userId) {
       axios.get(url2, {
@@ -55,7 +56,7 @@ const CategoryPage = () => {
   };
 
   const handleClick = () => {
-    const url = "http://localhost:5000/search?search=" + search;
+    const url = API_ENDPOINTS.SEARCH_PRODUCTS(search);
     axios.get(url)
         .then((res) => {
             console.log(res.data);
@@ -85,7 +86,7 @@ const CategoryPage = () => {
       toast.error('Please login first to like products');
       return;
     }
-    const url = "http://localhost:5000/like-products";
+    const url = API_ENDPOINTS.LIKE_PRODUCT;
     const data = { userId, productId };
     axios.post(url, data)
       .then((res) => {
@@ -106,7 +107,7 @@ const CategoryPage = () => {
       toast.error('Please login first to unlike products');
       return;
     }
-    const url = "http://localhost:5000/dislike-products";
+    const url = API_ENDPOINTS.DISLIKE_PRODUCT;
     const data = { userId, productId };
     axios.post(url, data)
       .then((res) => {
@@ -168,7 +169,7 @@ const CategoryPage = () => {
                 <img 
                   onClick={() => handleProducts(item._id)} 
                   className='product-image' 
-                  src={'http://localhost:5000/' + item.pimage} 
+                  src={getImageUrl(item.pimage)} 
                   alt={item.pname}
                 />
                 <div className='card-content'>
@@ -206,7 +207,7 @@ const CategoryPage = () => {
                 <img 
                   onClick={() => handleProducts(item._id)} 
                   className='product-image' 
-                  src={'http://localhost:5000/' + item.pimage} 
+                  src={getImageUrl(item.pimage)} 
                   alt={item.pname}
                 />
                 <div className='card-content'>

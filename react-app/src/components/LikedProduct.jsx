@@ -7,6 +7,7 @@ import { FaHeart } from "react-icons/fa6";
 import './LikedProduct.css';
 import './Home.css'
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS, getImageUrl } from '../config/api';
 const LikedProduct = () => {
 
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const LikedProduct = () => {
   // },[])
 
   useEffect(() => {
-    const url = "http://localhost:5000/liked-products";
+    const url = API_ENDPOINTS.LIKED_PRODUCTS;
     const userId = localStorage.getItem("userId");
   // console.log(userId,'xyz');
     axios.get(url, { 
@@ -42,7 +43,7 @@ const LikedProduct = () => {
         console.log(err);
         alert('error in10 products');
       })
-      const url2 = "http://localhost:5000/liked-products";
+      const url2 = API_ENDPOINTS.LIKED_PRODUCTS;
       const userId2 = localStorage.getItem('userId');
       // console.log(us`erId,"polo");
       axios.get(url2, {
@@ -119,7 +120,7 @@ const handleDislike = (productId) => {
     return;
   }
 
-  const url = "http://localhost:5000/dislike-products";
+  const url = API_ENDPOINTS.DISLIKE_PRODUCT;
   const data = { userId, productId };
 
   axios.post(url, data)
@@ -156,7 +157,7 @@ const handleDislike = (productId) => {
                              <FaHeart className='icon' />
                                    )}
                   </div>            
-            <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
+            <img onClick = {()=>handleProducts(item._id)} className='product-image' src={getImageUrl(item.pimage)} alt={item.pname}/>
             <div className='card-content'>
               <span className='category-badge'>{item.pcategory}</span>
               <h3 className='namee-text'>{item.pname}</h3>
@@ -178,7 +179,7 @@ const handleDislike = (productId) => {
                              <FaHeart className='icon' />
                                    )}
                   </div>           
-             <img onClick = {()=>handleProducts(item._id)} className='product-image' src={'http://localhost:5000/' + item.pimage} alt={item.pname}/>
+             <img onClick = {()=>handleProducts(item._id)} className='product-image' src={getImageUrl(item.pimage)} alt={item.pname}/>
             <div className='card-content'>
               <span className='category-badge'>{item.pcategory}</span>
               <h3 className='namee-text'>{item.pname}</h3>

@@ -6,6 +6,7 @@ import Categoriess from './Categoriess';
 import Pcategory from './Pcategory';
 import './EditProduct.css';
 import { toast } from 'react-toastify';
+import { API_ENDPOINTS, getImageUrl } from '../config/api';
 const EditProduct = () => {
     const params =useParams()
   console.log(params.pid,"params");
@@ -28,7 +29,7 @@ const EditProduct = () => {
   },[])
 
   useEffect(()=>{
-    const url = "http://localhost:5000/get-products/" + params.pid;
+    const url = API_ENDPOINTS.GET_PRODUCT_BY_ID(params.pid);
    axios.get(url)
    .then((res)=>{
     // console.log(res,'0000');
@@ -86,7 +87,7 @@ const handleProduct = ()=>{
     formData.append('pimage2', pimage2);
     formData.append('userId', localStorage.getItem('userId'));
 
-    const url = 'http://localhost:5000/edit-product'; 
+    const url = API_ENDPOINTS.EDIT_PRODUCT; 
     axios.post(url, formData)
         .then((res) => {
             console.log(res);
@@ -153,9 +154,9 @@ const handleProduct = ()=>{
 
         <label>Product Image</label>
         <input type="file" onChange={(e)=>{setPimage(e.target.files[0])}} className="form-control" />
-         <img height={70}width={110} src={'http://localhost:5000/'+ poldpimage }/><br></br>
+         <img height={70}width={110} src={getImageUrl(poldpimage)}/><br></br>
          <input type="file" onChange={(e)=>{setPimage2(e.target.files[0])}} className="form-control" />
-         <img height={70}width={110} src={'http://localhost:5000/'+ poldpimage2 }/><br></br>
+         <img height={70}width={110} src={getImageUrl(poldpimage2)}/><br></br>
         <button onClick={handleProduct} className='btn btn-primary mt-3'>Update</button>
     </div>
     </div>

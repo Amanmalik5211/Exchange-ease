@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Header from './Header'
 import './MyDetails.css'
+import { API_ENDPOINTS, getImageUrl } from '../config/api';
 const MyDetails = () => {
   const params =useParams()
   console.log(params.productid);
@@ -11,7 +12,7 @@ const MyDetails = () => {
   const [user,setUser] = useState()
 
   useEffect(()=>{
-    const url = "http://localhost:5000/get-products/" + params.productid;
+    const url = API_ENDPOINTS.GET_PRODUCT_BY_ID(params.productid);
    axios.get(url)
    .then((res)=>{
     console.log(res,'0000');
@@ -31,8 +32,8 @@ const MyDetails = () => {
       <Header/>
      {product && <div className='d-flex justify-content'>
         <div className="img-container">
-          <div className='img-one'><img src={"http://localhost:5000/"+product.pimage} alt="" /></div>
-        <div className='img-two'>  {product.pimage2&&<img src={"http://localhost:5000/"+product.pimage2} alt="" />}</div>
+          <div className='img-one'><img src={getImageUrl(product.pimage)} alt="" /></div>
+        <div className='img-two'>  {product.pimage2&&<img src={getImageUrl(product.pimage2)} alt="" />}</div>
         </div>
          <div className='detail'>
           <h3>Product Details</h3>
