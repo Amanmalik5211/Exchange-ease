@@ -9,7 +9,6 @@ const MyDetails = () => {
   console.log(params.productid);
   const [product,setProduct] = useState()
   console.log(product,'jkl11')
-  const [user,setUser] = useState()
 
   useEffect(()=>{
     const url = API_ENDPOINTS.GET_PRODUCT_BY_ID(params.productid);
@@ -25,7 +24,7 @@ const MyDetails = () => {
     console.log(err)
     alert('errorin product details')
    })
-  },[])
+  },[params.productid])
 
   return (
   <>

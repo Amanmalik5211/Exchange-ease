@@ -1,0 +1,62 @@
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-state-text {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* Responsive Design */
+/* Large screens (lg) - 1024px and above */
+@media (min-width: 1024px) {
+  .products-container {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 24px;
+  }
+}
+
+/* Medium screens (md) - 768px to 1023px */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .products-container {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+}
+
+/* Small screens (sm) - 480px to 767px */
+@media (max-width: 767px) and (min-width: 480px) {
+  .products-container {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
+/* Extra small screens (xs) - below 480px */
+@media (max-width: 479px) {
+  .products-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+}
+

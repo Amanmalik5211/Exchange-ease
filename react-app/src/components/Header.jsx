@@ -4,10 +4,13 @@ import "./Header.css";
 import "./Login";
 import logo2 from "./logo2.png";
 import { FaSearch } from "react-icons/fa";
+import { FaList } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import Home from "./Home";
+import Pcategory from "./Pcategory";
+
 const Header = (props) => {
   const [showOver, setshowOver] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
@@ -18,6 +21,23 @@ const Header = (props) => {
       setUsername(Username);
     }
   }, []);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showCategories && !event.target.closest('.category-icon-btn') && !event.target.closest('.category-dropdown')) {
+        setShowCategories(false);
+      }
+      if (showOver && !event.target.closest('.myprofile') && !event.target.closest('.myprofile-cont')) {
+        setshowOver(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showCategories, showOver]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -41,7 +61,7 @@ const Header = (props) => {
   return (
     <div className=" header-container d-flex justify-content-between">
       <div className="header">
-        <img className="logoimage" src={logo2} alt="My Image" />
+        <img className="logoimage" src={logo2} alt="Exchange Ease Logo" />
         <Link className="exchange-ease" to="/">
           Exchange Ease
         </Link>
@@ -71,6 +91,44 @@ const Header = (props) => {
         >
           <FaSearch />
         </button>
+        
+        {/* Category Icon for Small/Medium Screens */}
+        <button
+          className="category-icon-btn"
+          onClick={() => setShowCategories(!showCategories)}
+          aria-label="Categories"
+        >
+          <FaList />
+        </button>
+        
+        {/* Category Dropdown */}
+        {showCategories && (
+          <div className="category-dropdown">
+            <button
+              className="category-item"
+              onClick={() => {
+                navigate('/');
+                setShowCategories(false);
+              }}
+            >
+              All Categories
+            </button>
+            {Pcategory && Pcategory.length > 0 && (
+              Pcategory.map((item, index) => (
+                <button
+                  key={index}
+                  className="category-item"
+                  onClick={() => {
+                    navigate(`/category/${item}`);
+                    setShowCategories(false);
+                  }}
+                >
+                  {item}
+                </button>
+              ))
+            )}
+          </div>
+        )}
       </div>
 
       <div>
@@ -83,7 +141,7 @@ const Header = (props) => {
           {username ? username.charAt(0).toUpperCase() : ""}
         </div>
         {showOver && (
-          <div className="myprofile-cont">
+          <div className="myprofile-cont" onClick={(e) => e.stopPropagation()}>
             <div>
               {localStorage.getItem("token") && (
                 <button

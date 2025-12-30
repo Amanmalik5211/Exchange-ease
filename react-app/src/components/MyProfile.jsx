@@ -6,17 +6,6 @@ import { API_ENDPOINTS } from '../config/api';
 
 const MyProfile = () => {
     const [user, setUser] = useState(null);
-    const [product, setProduct] = useState();
-
-    const handleDelete = async (productId) => {
-        try {
-          await axios.delete(API_ENDPOINTS.DELETE_PRODUCT);
-          setProduct(product.filter(product => product._id !== productId));
-          console.log('Product deleted successfully');
-        } catch (error) {
-          console.error('Error deleting product:', error);
-        }
-      };
 
     useEffect(() => {
         const userId = localStorage.getItem("userId");

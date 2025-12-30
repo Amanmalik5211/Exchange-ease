@@ -83,7 +83,7 @@
 
 .mycard:hover .category-badge {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  color: #dc2626;
+  color: #2563eb;
   border-color: #fecaca;
 }
 
@@ -103,7 +103,7 @@
 }
 
 .myprice {
-  color: #dc2626;
+  color: #2563eb;
   font-family: 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 700;
@@ -135,7 +135,7 @@
 }
 
 .delete {
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
@@ -153,9 +153,9 @@
 }
 
 .delete:hover {
-  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .delete:active {
@@ -201,7 +201,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 50%, #2563eb 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 1;
@@ -211,10 +211,82 @@
   opacity: 1;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Responsive Design */
+/* Large screens (lg) - 1024px and above */
+@media (min-width: 1024px) {
+  .mycard {
+    width: calc(33.333% - 32px);
+    max-width: 400px;
+  }
+}
+
+/* Medium screens (md) - 768px to 1023px */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .mycard {
+    width: calc(50% - 32px);
+    max-width: 100%;
+  }
+  
+  .myname {
+    font-size: 18px;
+  }
+  
+  .myprice {
+    font-size: 20px;
+  }
+}
+
+/* Small screens (sm) - 480px to 767px */
+@media (max-width: 767px) and (min-width: 480px) {
   .mycard {
     width: 100%;
     max-width: 100%;
+    margin: 12px;
+  }
+  
+  .product-image {
+    height: 220px;
+  }
+  
+  .myname {
+    font-size: 16px;
+  }
+  
+  .myprice {
+    font-size: 18px;
+  }
+  
+  .mydesc {
+    font-size: 13px;
+  }
+}
+
+/* Extra small screens (xs) - below 480px */
+@media (max-width: 479px) {
+  .mycard {
+    width: 100%;
+    max-width: 100%;
+    margin: 8px;
+  }
+  
+  .product-image {
+    height: 200px;
+  }
+  
+  .myname {
+    font-size: 15px;
+  }
+  
+  .myprice {
+    font-size: 16px;
+  }
+  
+  .mydesc {
+    font-size: 12px;
+  }
+  
+  .edit, .delete {
+    font-size: 12px;
+    padding: 8px 12px;
   }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Header from './Header'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Categoriess from './Categoriess';
 import { FaHeart } from "react-icons/fa6";
@@ -11,12 +11,10 @@ import { API_ENDPOINTS, getImageUrl } from '../config/api';
 const LikedProduct = () => {
 
   const navigate = useNavigate();
-  const [refresh,setRefresh] = useState(false);
   const [products,setProducts] = useState([]);
   const [likedproducts,setLikedproducts] = useState([]);
   const [cproducts,setCproducts] = useState([]);
   const [search,setSearch] = useState('');
-  const [issearch,setIssearch] = useState(false);
   console.log("sdfghj76890987",likedproducts);
   // useEffect(()=>{
   //   if(!localStorage.getItem('token')){
@@ -62,7 +60,7 @@ const LikedProduct = () => {
         alert('Error fetching liked products');
       });
       
-        },[refresh]) 
+        },[products]) 
 
   const handleSearch = (value)=>{
      setSearch(value)
@@ -74,6 +72,7 @@ const LikedProduct = () => {
     )){
       return item;
     }
+    return false;
   })
   setCproducts(filteredProducts)
   }
@@ -85,6 +84,7 @@ const LikedProduct = () => {
       return item;
       // console.log(item);
     }
+    return false;
   })
   setCproducts(filteredProducts)
   }

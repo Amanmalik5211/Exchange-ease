@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Header from './Header'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Categoriess from './Categoriess';
 import { FaHeart } from "react-icons/fa6";
@@ -8,9 +8,7 @@ import './MyProduct.css'
 import { API_ENDPOINTS, getImageUrl } from '../config/api';
 
 const MyProducts = () => {
-  // const navigate = useNavigate();
   const [products,setProducts] = useState([]);
-  const [cproducts,setCproducts] = useState([]);
   const [search,setSearch] = useState('');
   const navigate = useNavigate();
   // useEffect(()=>{
@@ -47,8 +45,9 @@ const MyProducts = () => {
     )){
       return item;
     }
+    return false;
   })
-  setCproducts(filteredProducts)
+  // setCproducts(filteredProducts)
   }
 
   const handleCategory = (value)=>{
@@ -56,10 +55,10 @@ const MyProducts = () => {
      console.log(value,item,'vv78');
     if (item.pcategory===value){
       return item;
-      console.log(item);
     }
+    return false;
   })
-  setCproducts(filteredProducts)
+  // setCproducts(filteredProducts)
   }
 
 

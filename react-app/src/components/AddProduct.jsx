@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from './Header'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import Categoriess from './Categoriess';
 import Pcategory from './Pcategory';
 import './AddProduct.css'
 import { toast } from 'react-toastify';
@@ -19,7 +18,7 @@ const AddProduct = () => {
     if(!localStorage.getItem('token')){
       navigate('/login')
     }
-  },[])
+  },[navigate])
 
 const handleProduct = ()=>{
   navigator.geolocation.getCurrentPosition((position)=>{

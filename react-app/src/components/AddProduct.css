@@ -53,7 +53,7 @@
   left: 0;
   width: 60px;
   height: 3px;
-  background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
   border-radius: 2px;
 }
 
@@ -91,7 +91,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   color: #ffffff;
   border-radius: 50%;
   font-size: 12px;
@@ -123,7 +123,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
 }
 
 .miniadd-containerr {
@@ -166,8 +166,8 @@
 .add-containerr input[type="text"]:focus,
 .add-containerr select:focus {
   outline: none;
-  border-color: #dc2626;
-  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
   background-color: #ffffff;
 }
 
@@ -177,7 +177,7 @@
 }
 
 .add-containerr input[type="file"]:hover {
-  border-color: #dc2626;
+  border-color: #2563eb;
   background-color: #fef2f2;
 }
 
@@ -188,7 +188,7 @@
 .miniadd-containerr .btn {
   margin-top: 8px;
   padding: 12px;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   border: none;
   border-radius: 10px;
   color: #ffffff;
@@ -197,16 +197,16 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   flex-shrink: 0;
 }
 
 .miniadd-containerr .btn:hover {
-  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
 }
 
 .miniadd-containerr .btn:active {
@@ -217,8 +217,16 @@
   margin-top: 8px;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+/* Responsive Design */
+/* Large screens (lg) - 1024px and above */
+@media (min-width: 1024px) {
+  .add-box {
+    flex-direction: row;
+  }
+}
+
+/* Medium screens (md) - 768px to 1023px */
+@media (max-width: 1023px) and (min-width: 768px) {
   .add-box {
     flex-direction: column;
     align-items: center;
@@ -233,16 +241,21 @@
   }
   
   .add-main-title {
-    font-size: 56px;
+    font-size: 48px;
   }
   
   .add-containerr {
     width: 100%;
     max-width: 600px;
   }
+  
+  .miniadd-containerr {
+    padding: 30px;
+  }
 }
 
-@media (max-width: 768px) {
+/* Small screens (sm) - 480px to 767px */
+@media (max-width: 767px) and (min-width: 480px) {
   .add-box {
     padding: 30px 15px;
     gap: 30px;

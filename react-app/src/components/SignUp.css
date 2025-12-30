@@ -16,7 +16,7 @@
   position: absolute;
   width: 500px;
   height: 500px;
-  background: rgba(220, 38, 38, 0.05);
+  background: rgba(37, 99, 235, 0.05);
   border-radius: 50%;
   top: -150px;
   left: -150px;
@@ -28,7 +28,7 @@
   position: absolute;
   width: 400px;
   height: 400px;
-  background: rgba(220, 38, 38, 0.03);
+  background: rgba(37, 99, 235, 0.03);
   border-radius: 50%;
   bottom: -100px;
   right: -100px;
@@ -99,8 +99,8 @@
 .signup-feature-icon {
   width: 40px;
   height: 40px;
-  background: rgba(220, 38, 38, 0.1);
-  border: 1px solid rgba(220, 38, 38, 0.2);
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.2);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -180,7 +180,7 @@
 
 .signup-input {
   width: 100%;
-  padding: 15px 16px 15px 46px;
+  padding: 15px 16px;
   background: #f9fafb;
   border: 2px solid #e5e7eb;
   border-radius: 12px;
@@ -197,21 +197,21 @@
 
 .signup-input:focus {
   outline: none;
-  border-color: #dc2626;
+  border-color: #2563eb;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
 .signup-input:focus + .signup-input-icon,
 .signup-input-wrapper:focus-within .signup-input-icon {
-  color: #dc2626;
+  color: #2563eb;
 }
 
 /* Button - Red Gradient */
 .signup-btn {
   width: 100%;
   padding: 16px;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #2563eb 100%);
   border: none;
   border-radius: 12px;
   font-family: 'Inter', sans-serif;
@@ -223,7 +223,7 @@
   margin-top: 8px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
 }
 
 .signup-btn::before {
@@ -239,8 +239,8 @@
 
 .signup-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
-  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 50%, #b91c1c 100%);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #1d4ed8 100%);
 }
 
 .signup-btn:hover::before {
@@ -278,7 +278,7 @@
 
 .signup-footer-link {
   font-family: 'Inter', sans-serif;
-  color: #dc2626;
+  color: #2563eb;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
@@ -286,7 +286,7 @@
 }
 
 .signup-footer-link:hover {
-  color: #b91c1c;
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
@@ -314,6 +314,30 @@
 }
 
 /* Responsive */
+/* Responsive Design */
+/* Medium screens (md) - 768px to 1023px */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .signup-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .signup-brand {
+    width: 100%;
+    padding: 30px 20px;
+  }
+  
+  .signup-card {
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .signup-form-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
 @media (max-width: 950px) {
   .signup-container {
     flex-direction: column;

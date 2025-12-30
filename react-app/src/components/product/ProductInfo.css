@@ -1,0 +1,163 @@
+.product-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.product-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-category-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: #e0e7ff;
+  color: #4338ca;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.product-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.product-price-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.price-label {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.price-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.product-description-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.product-description {
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive Design */
+/* Medium screens (md) - 768px to 1023px */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .product-title {
+    font-size: 16px;
+  }
+  
+  .price-value {
+    font-size: 22px;
+  }
+  
+  .section-title {
+    font-size: 13px;
+  }
+  
+  .product-description {
+    font-size: 12px;
+  }
+}
+
+/* Small screens (sm) - 480px to 767px */
+@media (max-width: 767px) and (min-width: 480px) {
+  .product-info-section {
+    gap: 16px;
+  }
+  
+  .product-title {
+    font-size: 15px;
+  }
+  
+  .price-value {
+    font-size: 20px;
+  }
+  
+  .price-label {
+    font-size: 12px;
+  }
+  
+  .section-title {
+    font-size: 12px;
+  }
+  
+  .product-description {
+    font-size: 11px;
+  }
+  
+  .product-category-badge {
+    font-size: 12px;
+    padding: 4px 12px;
+  }
+}
+
+/* Extra small screens (xs) - below 480px */
+@media (max-width: 479px) {
+  .product-info-section {
+    gap: 12px;
+  }
+  
+  .product-header {
+    gap: 8px;
+  }
+  
+  .product-title {
+    font-size: 14px;
+  }
+  
+  .product-price-section {
+    padding: 16px;
+  }
+  
+  .price-value {
+    font-size: 18px;
+  }
+  
+  .price-label {
+    font-size: 11px;
+  }
+  
+  .section-title {
+    font-size: 11px;
+  }
+  
+  .product-description {
+    font-size: 11px;
+  }
+  
+  .product-category-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+}
+

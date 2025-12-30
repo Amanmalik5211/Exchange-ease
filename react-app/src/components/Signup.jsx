@@ -81,7 +81,6 @@ function Signup() {
                     placeholder='Your name'
                     required
                   />
-                  <span className='signup-input-icon'>👤</span>
                 </div>
               </div>
 
@@ -96,7 +95,6 @@ function Signup() {
                     placeholder='Phone number'
                     required
                   />
-                  <span className='signup-input-icon'>📱</span>
                 </div>
               </div>
             </div>
@@ -112,7 +110,6 @@ function Signup() {
                   placeholder='Enter your email'
                   required
                 />
-                <span className='signup-input-icon'>✉</span>
               </div>
             </div>
 
@@ -127,7 +124,6 @@ function Signup() {
                   placeholder='Create a password'
                   required
                 />
-                <span className='signup-input-icon'>🔒</span>
               </div>
             </div>
 

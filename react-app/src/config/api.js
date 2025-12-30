@@ -61,7 +61,7 @@ export const TOAST_CONFIG = {
   POSITION: process.env.REACT_APP_TOAST_POSITION || 'top-right',
 };
 
-export default {
+const apiConfig = {
   API_BASE_URL,
   SOCKET_URL,
   API_ENDPOINTS,
@@ -70,4 +70,6 @@ export default {
   APP_CONFIG,
   TOAST_CONFIG,
 };
+
+export default apiConfig;
 

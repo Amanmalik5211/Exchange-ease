@@ -84,7 +84,7 @@
 
 .carrdd:hover .category-badge {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  color: #dc2626;
+  color: #2563eb;
   border-color: #fecaca;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .pricee-text {
-  color: #dc2626;
+  color: #2563eb;
   font-family: 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 700;
@@ -143,7 +143,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 50%, #2563eb 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 1;
@@ -151,4 +151,110 @@
 
 .carrdd:hover::before {
   opacity: 1;
+}
+
+/* Responsive Design */
+/* Large screens (lg) - 1024px and above */
+@media (min-width: 1024px) {
+  .carrdd {
+    max-width: 320px;
+  }
+}
+
+/* Medium screens (md) - 768px to 1023px */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .carrdd {
+    max-width: 100%;
+    margin: 12px;
+  }
+  
+  .namee-text {
+    font-size: 16px;
+  }
+  
+  .pricee-text {
+    font-size: 22px;
+  }
+  
+  .pricee-text::before {
+    font-size: 16px;
+  }
+  
+  .descc {
+    font-size: 12px;
+  }
+}
+
+/* Small screens (sm) - 480px to 767px */
+@media (max-width: 767px) and (min-width: 480px) {
+  .carrdd {
+    max-width: 100%;
+    margin: 10px;
+  }
+  
+  .carrdd img,
+  .carrdd .product-image {
+    height: 200px;
+  }
+  
+  .carrdd .card-content {
+    padding: 16px;
+  }
+  
+  .namee-text {
+    font-size: 15px;
+    min-height: 42px;
+  }
+  
+  .pricee-text {
+    font-size: 20px;
+  }
+  
+  .pricee-text::before {
+    font-size: 15px;
+  }
+  
+  .descc {
+    font-size: 12px;
+  }
+}
+
+/* Extra small screens (xs) - below 480px */
+@media (max-width: 479px) {
+  .carrdd {
+    max-width: 100%;
+    margin: 8px;
+    border-radius: 16px;
+  }
+  
+  .carrdd img,
+  .carrdd .product-image {
+    height: 180px;
+  }
+  
+  .carrdd .card-content {
+    padding: 14px;
+  }
+  
+  .namee-text {
+    font-size: 14px;
+    min-height: 40px;
+  }
+  
+  .pricee-text {
+    font-size: 18px;
+  }
+  
+  .pricee-text::before {
+    font-size: 14px;
+  }
+  
+  .descc {
+    font-size: 11px;
+  }
+  
+  .carrdd .category-badge {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
 }

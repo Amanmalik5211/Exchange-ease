@@ -3,10 +3,10 @@ import Header from './Header'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Categoriess from './Categoriess';
-import { FaHeart } from "react-icons/fa6";
 import './Home.css'
 import { toast } from 'react-toastify';
-import { API_ENDPOINTS, getImageUrl } from '../config/api';
+import { API_ENDPOINTS } from '../config/api';
+import ProductGrid from './product/ProductGrid';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -182,92 +182,22 @@ const handleProducts= (id)=>{
         </div>
       )}
 
-      {issearch && (
-        <div className='products-container'>
-          {cproducts && cproducts.length > 0 &&
-            cproducts.map((item, index) => {
-              return (
-                <div key={item._id} className='cardd' style={{animationDelay: `${index * 0.1}s`}}>
-                  <div className='icon-cont'>
-                    {likedproducts.find(likedItem => likedItem._id === item._id) ? (
-                      <FaHeart onClick={() => handleDislike(item._id)} className='red-icon' />
-                    ) : (
-                      <FaHeart onClick={() => handleLike(item._id)} className='icon' />
-                    )}
-                  </div>
-
-                  <img 
-                    onClick={() => handleProducts(item._id)} 
-                    className='product-image' 
-                    src={getImageUrl(item.pimage)} 
-                    alt={item.pname}
-                  />
-                  <div className='card-content'>
-                    <span className='category-badge'>{item.pcategory}</span>
-                    <h3 className='name-text'>{item.pname}</h3>
-                    <p className='price-text'>{item.price}</p>
-                    <p className='desc'>{item.pdesc}</p>
-                    <button 
-                      className='view-details-btn'
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleProducts(item._id);
-                      }}
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </div>
-              )
-            })
-          }
-        </div>
-      )}
-
-      {!issearch && (
-        <div className='products-container'>
-          {products && products.length > 0 ? (
-            products.map((item, index) => {
-              return (
-                <div key={item._id} className='cardd' style={{animationDelay: `${index * 0.05}s`}}>
-                  <div className='icon-cont'>
-                    {likedproducts.find(likedItem => likedItem._id === item._id) ? (
-                      <FaHeart onClick={() => handleDislike(item._id)} className='red-icon' />
-                    ) : (
-                      <FaHeart onClick={() => handleLike(item._id)} className='icon' />
-                    )}
-                  </div>
-                  <img 
-                    onClick={() => handleProducts(item._id)} 
-                    className='product-image' 
-                    src={getImageUrl(item.pimage)} 
-                    alt={item.pname}
-                  />
-                  <div className='card-content'>
-                    <span className='category-badge'>{item.pcategory}</span>
-                    <h3 className='name-text'>{item.pname}</h3>
-                    <p className='price-text'>{item.price}</p>
-                    <p className='desc'>{item.pdesc}</p>
-                    <button 
-                      className='view-details-btn'
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleProducts(item._id);
-                      }}
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </div>
-              )
-            })
-          ) : (
-            <div className='empty-state'>
-              <div className='empty-state-text'>No products available</div>
-              <p style={{fontSize: '14px', marginTop: '10px', color: '#9ca3af'}}>Be the first to add a product!</p>
-            </div>
-          )}
-        </div>
+      {issearch ? (
+        <ProductGrid
+          products={cproducts}
+          likedProducts={likedproducts}
+          onLike={handleLike}
+          onDislike={handleDislike}
+          onProductClick={handleProducts}
+        />
+      ) : (
+        <ProductGrid
+          products={products}
+          likedProducts={likedproducts}
+          onLike={handleLike}
+          onDislike={handleDislike}
+          onProductClick={handleProducts}
+        />
       )}
     </div>
   )

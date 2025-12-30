@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from './Header'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
-import Categoriess from './Categoriess';
 import Pcategory from './Pcategory';
 import './EditProduct.css';
 import { toast } from 'react-toastify';
@@ -26,7 +25,7 @@ const EditProduct = () => {
     if(!localStorage.getItem('token')){
       navigate('/')
     }
-  },[])
+  },[navigate])
 
   useEffect(()=>{
     const url = API_ENDPOINTS.GET_PRODUCT_BY_ID(params.pid);
@@ -47,7 +46,7 @@ const EditProduct = () => {
     console.log(err)
     alert('errorin product details')
    })
-  },[])
+  },[params.pid])
 
   // const handleProduct = () => {
     // const formData = new FormData();
@@ -154,9 +153,9 @@ const handleProduct = ()=>{
 
         <label>Product Image</label>
         <input type="file" onChange={(e)=>{setPimage(e.target.files[0])}} className="form-control" />
-         <img height={70}width={110} src={getImageUrl(poldpimage)}/><br></br>
+         <img height={70}width={110} src={getImageUrl(poldpimage)} alt="Current product image"/><br></br>
          <input type="file" onChange={(e)=>{setPimage2(e.target.files[0])}} className="form-control" />
-         <img height={70}width={110} src={getImageUrl(poldpimage2)}/><br></br>
+         <img height={70}width={110} src={getImageUrl(poldpimage2)} alt="Current product image 2"/><br></br>
         <button onClick={handleProduct} className='btn btn-primary mt-3'>Update</button>
     </div>
     </div>

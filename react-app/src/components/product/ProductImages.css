@@ -1,0 +1,29 @@
+.product-images-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.main-image-wrapper,
+.secondary-image-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-image,
+.secondary-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.main-image {
+  max-height: 500px;
+}
+
+.secondary-image {
+  max-height: 300px;
+}
+

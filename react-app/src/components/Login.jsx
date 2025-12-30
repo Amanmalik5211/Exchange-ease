@@ -72,7 +72,6 @@ function Login() {
                   placeholder='Enter your email'
                   required
                 />
-                <span className='login-input-icon'>✉</span>
               </div>
             </div>
 
@@ -87,7 +86,6 @@ function Login() {
                   placeholder='Enter your password'
                   required
                 />
-                <span className='login-input-icon'>🔒</span>
               </div>
             </div>
 
