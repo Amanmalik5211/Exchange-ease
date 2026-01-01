@@ -48,29 +48,6 @@ const EditProduct = () => {
    })
   },[params.pid])
 
-  // const handleProduct = () => {
-    // const formData = new FormData();
-    // formData.append('pname', pname);
-    // formData.append('pdesc', pdesc);
-    // formData.append('price', price);
-    // formData.append('pcategory', pcategory);
-    // formData.append('pimage', pimage);
-    // formData.append('pimage2', pimage2);
-    // formData.append('userId', localStorage.getItem('userId'));
-
-    // const url = 'http://localhost:5000/add-product'; 
-    // axios.post(url, formData)
-    //     .then((res) => {
-    //         console.log(res);
-    //         if(res.data.message){
-    //           alert(res.data.message);
-    //           navigate('/');
-    //         }
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     });
-// }
 
 const handleProduct = ()=>{
   //navigator hota h jo ki inbuild h or apni live locaton save krta h..
@@ -140,10 +117,6 @@ const handleProduct = ()=>{
         
         <label>Product Category</label>
         <select className='form-control' value={pcategory} onChange={(e)=>{setPcategory(e.target.value)}}>
-            {/* <option>Bike</option>
-            <option>Car</option>
-            <option>Phone</option>
-            <option>Mobile</option> */}
             {Pcategory && Pcategory.length>0 && Pcategory.map((item,index)=>{
               return(
                 <option key={'option'+index}>{item}</option>
@@ -153,9 +126,9 @@ const handleProduct = ()=>{
 
         <label>Product Image</label>
         <input type="file" onChange={(e)=>{setPimage(e.target.files[0])}} className="form-control" />
-         <img height={70}width={110} src={getImageUrl(poldpimage)} alt="Current product image"/><br></br>
+         <image height={70}width={110} src={getImageUrl(poldpimage)} alt="Current product image"/><br></br>
          <input type="file" onChange={(e)=>{setPimage2(e.target.files[0])}} className="form-control" />
-         <img height={70}width={110} src={getImageUrl(poldpimage2)} alt="Current product image 2"/><br></br>
+         <image height={70}width={110} src={getImageUrl(poldpimage2)} alt="Current product image 2"/><br></br>
         <button onClick={handleProduct} className='btn btn-primary mt-3'>Update</button>
     </div>
     </div>

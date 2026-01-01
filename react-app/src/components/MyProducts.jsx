@@ -11,11 +11,7 @@ const MyProducts = () => {
   const [products,setProducts] = useState([]);
   const [search,setSearch] = useState('');
   const navigate = useNavigate();
-  // useEffect(()=>{
-  //   if(!localStorage.getItem('token')){
-  //     navigate('/login')
-  //   }
-  // },[])
+
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -108,21 +104,7 @@ const handleProducts= (id)=>{
     <div>
       <Header search={search} handleSearch={handleSearch} handleClick={handleClick}/>
       <Categoriess handleCategory = {handleCategory}/>
-        {/* <div className='d-flex justify-content-center flex-wrap'>
-        {cproducts && cproducts.length>0 &&
-          cproducts.map((item,index)=>{
-            return(
-              <div key={item._id} className='card m-4 mycard'>
-                <div onClick={()=>handleLike(item._id)} className='icon-cont'><FaHeart className='icon'/></div>
-                <img onClick = {()=>handleProducts(item._id)} width='300px'height='300px' src={getImageUrl(item.pimage)}/>
-              <p className=' myname'> {item.pname} | {item.pcategory}</p>
-              <p className=' myprice'> ₹ {item.price}</p>
-              <p className='mydesc'>{item.pdesc.length > 20 ? item.pdesc.substring(0, 35) + '...' : item.pdesc}</p><p className=' m-2  text-success'> {item.pdesc}</p>
-              </div>
-            )
-          })
-        }
-        </div> */}
+      
       <div className='d-flex justify-content-center flex-wrap'>
       {products && products.length>0 &&
          products.map((item,index)=>{

@@ -18,12 +18,6 @@ const Home = () => {
   const [issearch,setIssearch] = useState(false);
 
 
-  // useEffect(()=>{
-  //   if(!localStorage.getItem('token')){
-  //     navigate('/login')
-  //   }
-  // },[])
-
   useEffect(()=>{
     const url = API_ENDPOINTS.GET_PRODUCTS;
    axios.get(url)
@@ -77,20 +71,6 @@ axios.get(url2, {
         });
 };
 
-
-  //  const handleLocationsearch = ()=>{
-  //   const url = "http://localhost:5000/search?search=" + search+'&loc='+localStorage.getItem('userLoc');
-  //  axios.get(url)
-  //  .then((res)=>{
-  //   console.log(res.data)
-  //    setCproducts(res.data.products)
-  //    setIssearch(true);
-  //  })
-  //  .catch((err)=>{
-  //   console.log(err)
-  //   alert('error..in lol search')
-  //  })
-  // }
 
   const handleCategory = (value)=>{
     let filteredProducts = products.filter((item,index)=>{ 

@@ -22,7 +22,7 @@ const Header = (props) => {
     }
   }, []);
 
-  // Close dropdowns when clicking outside
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showCategories && !event.target.closest('.category-icon-btn') && !event.target.closest('.category-dropdown')) {
@@ -45,19 +45,7 @@ const Header = (props) => {
     navigate("/login");
   };
 
-  // let locations=[
-  // {
-  //   'latitude':28.6139,
-  //   'longitude':77.2090,
-  //   'placeName':"New Delhi,Delhi"
-  // },
-  // {
-  //   'latitude':19.0760,
-  //   'longitude':72.8777,
-  //   'placeName':"Mumbai,Maharashtra"
-  // }
-
-  // ]
+ 
   return (
     <div className=" header-container d-flex justify-content-between">
       <div className="header">
@@ -65,18 +53,6 @@ const Header = (props) => {
         <Link className="exchange-ease" to="/">
           Exchange Ease
         </Link>
-        {/* <select value = {loc} onChange={(e)=>{
-        localStorage.setItem('userLoc',e.target.value)
-        setLoc(e.target.value)
-        }}>
-     {locations.map((item,index)=>{
-      return(
-        <option key={index} value={`${item.latitude},${item.longitude}`}>
-          {item.placeName}
-        </option>
-      )
-     })}
-       </select> */}
         <input
           className="search"
           type="text"

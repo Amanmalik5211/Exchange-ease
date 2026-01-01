@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // for making HTTP requests
+import axios from 'axios'; 
 
 const DeleteUser = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,7 +9,7 @@ const DeleteUser = ({ userId }) => {
   const deleteUser = async () => {
     setIsLoading(true);
     try {
-      // Send a request to your backend to delete the user profile
+      
       await axios.delete(`/api/users/${userId}`);
       setSuccess(true);
     } catch (error) {

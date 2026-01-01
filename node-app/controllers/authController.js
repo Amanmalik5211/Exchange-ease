@@ -37,7 +37,11 @@ const login = async (req, res) => {
       return res.send({ message: 'password not match' });
     }
 
-    const token = jwt.sign({ data: user }, 'mykey', { expiresIn: '1h' });
+    const token = jwt.sign(
+      { data: user }, 
+      process.env.JWT_SECRET || 'mykey', 
+      { expiresIn: process.env.JWT_EXPIRE || '1h' }
+    );
     return res.send({
       message: 'find user',
       token: token,

@@ -16,11 +16,7 @@ const LikedProduct = () => {
   const [cproducts,setCproducts] = useState([]);
   const [search,setSearch] = useState('');
   console.log("sdfghj76890987",likedproducts);
-  // useEffect(()=>{
-  //   if(!localStorage.getItem('token')){
-  //     navigate('/login')
-  //   }
-  // },[])
+ 
 
   useEffect(() => {
     const url = API_ENDPOINTS.LIKED_PRODUCTS;
@@ -90,25 +86,7 @@ const LikedProduct = () => {
   }
 
 
-//  const handleLike =(productId)=>{
-//    let userId = localStorage.getItem("userId");
-//   //  console.log(userId,productId,"uuuu");
-//     const url = "http://localhost:5000/like-products";
-//     const data = {userId,productId}
-//    axios.post(url,data)
-//    .then((res)=>{
-//     if(res.data.message){
-//       alert("liked")
-//     }
-//    })
-//    .catch((err)=>{
-//     console.log(err)
-//     alert('error in products')
-//    })
-// }
-// const handleProducts= (id)=>{
-//   navigate('/product/'+id)
-// }
+
 
 const handleProducts= (id)=>{
   navigate('/product/'+id)
@@ -132,8 +110,6 @@ const handleDislike = (productId) => {
         // Update likedproducts state to remove the disliked product
         setLikedproducts(prevLikedProducts => prevLikedProducts.filter(item => item._id !== productId));
         
-        // Optionally, you can update other relevant state or trigger a refresh here
-        // setRefresh(!refresh);
       }
     })
     .catch((err) => {

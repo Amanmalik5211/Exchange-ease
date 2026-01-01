@@ -43,7 +43,6 @@ function Signup() {
     <div className='signup-page'>
       <div className='signup-container'>
         
-        {/* Brand Section */}
         <div className='signup-brand'>
           <img src={logo2} alt="Exchange Ease Logo" />
           <h1 className='signup-brand-title'>Exchange Ease</h1>
@@ -62,7 +61,7 @@ function Signup() {
           </div>
         </div>
 
-        {/* Signup Card */}
+   
         <div className='signup-card'>
           <div className='signup-card-header'>
             <h2 className='signup-card-title'>Create Account</h2>
