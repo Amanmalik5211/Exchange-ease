@@ -65,8 +65,8 @@
   height: 200px;
 }
 
-/* Product Info Section */
-.product-info-section {
+/* Product Details Container - Parent div that wraps ProductInfo and ContactInfo */
+.product-details-container {
   background: #ffffff;
   border-radius: 14px;
   padding: 24px;
@@ -77,6 +77,7 @@
   gap: 20px;
   height: 100%;
   max-height: 100%;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -636,7 +637,7 @@
     padding: 16px;
   }
   
-  .product-info-section {
+  .product-details-container {
     padding: 20px;
   }
   
@@ -674,7 +675,7 @@
     min-height: calc(100vh - 70px);
   }
   
-  .product-info-section {
+  .product-details-container {
     padding: 16px;
     height: auto;
     max-height: none;
@@ -738,7 +739,7 @@
     padding: 0;
   }
   
-  .product-info-section {
+  .product-details-container {
     padding: 12px;
     height: auto;
     max-height: none;

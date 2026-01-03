@@ -16,7 +16,6 @@ const CategoryPage = () => {
   const [search, setSearch] = useState('');
   const [issearch, setIssearch] = useState(false);
   const [likedproducts, setLikedproducts] = useState([]);
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const url = API_ENDPOINTS.GET_PRODUCTS_BY_CATEGORY(params.catName);
@@ -49,7 +48,7 @@ const CategoryPage = () => {
         console.log(err);
       });
     }
-  }, [params.catName, refresh]);
+  }, [params.catName]); // Remove refresh dependency
 
   const handleSearch = (value) => {
     setSearch(value);
@@ -80,46 +79,70 @@ const CategoryPage = () => {
     setIssearch(true);
   };
 
-  const handleLike = (productId) => {
+  const handleLike = async (productId) => {
     let userId = localStorage.getItem("userId");
     if (!userId) {
       toast.error('Please login first to like products');
       return;
     }
-    const url = API_ENDPOINTS.LIKE_PRODUCT;
-    const data = { userId, productId };
-    axios.post(url, data)
-      .then((res) => {
-        if (res.data.message) {
-          toast.success('Product added to favorites!');
-          setRefresh(!refresh);
+    
+    try {
+      const url = API_ENDPOINTS.LIKE_PRODUCT;
+      const data = { userId, productId };
+      const res = await axios.post(url, data);
+      
+      if (res.data.message) {
+        toast.success('Product added to favorites!');
+        
+        // Only refresh liked products, not all products
+        const url2 = API_ENDPOINTS.LIKED_PRODUCTS;
+        const likedRes = await axios.get(url2, {
+          headers: {
+            "x-auth-token": userId
+          }
+        });
+        
+        if(likedRes.data.products){
+          setLikedproducts(likedRes.data.products.likedProducts);
         }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error('Failed to like product. Please try again.');
-      });
+      }
+    } catch(err) {
+      console.log(err);
+      toast.error('Failed to like product. Please try again.');
+    }
   };
 
-  const handleDislike = (productId) => {
+  const handleDislike = async (productId) => {
     let userId = localStorage.getItem("userId");
     if (!userId) {
       toast.error('Please login first to unlike products');
       return;
     }
-    const url = API_ENDPOINTS.DISLIKE_PRODUCT;
-    const data = { userId, productId };
-    axios.post(url, data)
-      .then((res) => {
-        if (res.data.message) {
-          toast.success('Product removed from favorites!');
-          setRefresh(!refresh);
+    
+    try {
+      const url = API_ENDPOINTS.DISLIKE_PRODUCT;
+      const data = { userId, productId };
+      const res = await axios.post(url, data);
+      
+      if (res.data.message) {
+        toast.success('Product removed from favorites!');
+        
+        // Only refresh liked products, not all products
+        const url2 = API_ENDPOINTS.LIKED_PRODUCTS;
+        const likedRes = await axios.get(url2, {
+          headers: {
+            "x-auth-token": userId
+          }
+        });
+        
+        if(likedRes.data.products){
+          setLikedproducts(likedRes.data.products.likedProducts);
         }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error('Failed to unlike product. Please try again.');
-      });
+      }
+    } catch(err) {
+      console.log(err);
+      toast.error('Failed to unlike product. Please try again.');
+    }
   };
 
   const handleProducts = (id) => {

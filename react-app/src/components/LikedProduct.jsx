@@ -21,42 +21,28 @@ const LikedProduct = () => {
   useEffect(() => {
     const url = API_ENDPOINTS.LIKED_PRODUCTS;
     const userId = localStorage.getItem("userId");
-  // console.log(userId,'xyz');
+    
+    if (!userId) {
+      return;
+    }
+    
     axios.get(url, { 
       headers: {
         "x-auth-token": userId
-      }     })
-      .then((res) => {
-        // console.log(res.data.products.likedProducts);
-        if (res.data.products) { 
-          setProducts(prevProducts => [...prevProducts, ...res.data.products.likedProducts]); // Use functional form of setProducts
-          console.log("products", products); 
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        alert('error in10 products');
-      })
-      const url2 = API_ENDPOINTS.LIKED_PRODUCTS;
-      const userId2 = localStorage.getItem('userId');
-      // console.log(us`erId,"polo");
-      axios.get(url2, {
-        headers: {
-          "x-auth-token": userId2
-        }
-      })
-      .then((res) => {
-        // console.log(res);
-        // console.log(res.data)
+      }
+    })
+    .then((res) => {
+      if (res.data.products) { 
+        // Replace products instead of appending to prevent duplicates
+        setProducts(res.data.products.likedProducts);
         setLikedproducts(res.data.products.likedProducts);
-        // console.log("liked", likedproducts);
-      })
-      .catch((err) => {
-        // console.log(err);
-        alert('Error fetching liked products');
-      });
-      
-        },[products]) 
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      alert('Error fetching liked products');
+    });
+  }, []) // Only run on mount, not when products change 
 
   const handleSearch = (value)=>{
      setSearch(value)
@@ -91,31 +77,31 @@ const LikedProduct = () => {
 const handleProducts= (id)=>{
   navigate('/product/'+id)
 }
-const handleDislike = (productId) => {
+const handleDislike = async (productId) => {
   let userId = localStorage.getItem("userId");
   if (!userId) {
     toast.error('Please login first to unlike products');
     return;
   }
 
-  const url = API_ENDPOINTS.DISLIKE_PRODUCT;
-  const data = { userId, productId };
+  try {
+    const url = API_ENDPOINTS.DISLIKE_PRODUCT;
+    const data = { userId, productId };
 
-  axios.post(url, data)
-    .then((res) => {
-      if (res.data.message) {
-        toast.success('Product removed from favorites!');
-        console.log("Disliked", res.data);
-
-        // Update likedproducts state to remove the disliked product
-        setLikedproducts(prevLikedProducts => prevLikedProducts.filter(item => item._id !== productId));
-        
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      toast.error('Failed to remove product from favorites. Please try again.');
-    });
+    const res = await axios.post(url, data);
+    
+    if (res.data.message) {
+      toast.success('Product removed from favorites!');
+      
+      // Update both products and likedproducts state to remove the disliked product
+      setProducts(prevProducts => prevProducts.filter(item => item._id !== productId));
+      setLikedproducts(prevLikedProducts => prevLikedProducts.filter(item => item._id !== productId));
+      setCproducts(prevCproducts => prevCproducts.filter(item => item._id !== productId));
+    }
+  } catch(err) {
+    console.log(err);
+    toast.error('Failed to remove product from favorites. Please try again.');
+  }
 }
 
   return (

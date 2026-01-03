@@ -57,7 +57,7 @@ const ProductDetail = () => {
           <ProductImages product={product} />
 
           {/* Center Section - Product Details */}
-          <div className="product-info-section">
+          <div className="product-details-container">
             <ProductInfo product={product} />
             {product.addBy && <ContactInfo user={user} />}
           </div>
