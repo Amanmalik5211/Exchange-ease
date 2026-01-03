@@ -7,6 +7,7 @@ import './Home.css'
 import { toast } from 'react-toastify';
 import { API_ENDPOINTS } from '../config/api';
 import ProductGrid from './product/ProductGrid';
+import Loader from './Loader';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,46 +16,37 @@ const Home = () => {
   const [cproducts,setCproducts] = useState([]);
   const [search,setSearch] = useState('');
   const [issearch,setIssearch] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(()=>{
+    setLoading(true);
     const url = API_ENDPOINTS.GET_PRODUCTS;
-   axios.get(url)
-   .then((res)=>{
-    // console.log(res);
-    if(res.data.product){
-      setProducts(res.data.product);
-    }
-   })
-   .catch((err)=>{
-    // console.log(err)
-    alert('error78in products')
-   })
+    const url2 = API_ENDPOINTS.LIKED_PRODUCTS;
+    const userId = localStorage.getItem('userId');
+    
+    // Fetch products and liked products in parallel
+    const promises = [
+      axios.get(url),
+      userId ? axios.get(url2, { headers: { "x-auth-token": userId } }) : Promise.resolve(null)
+    ];
 
-   const url2 = API_ENDPOINTS.LIKED_PRODUCTS;
-   const userId = localStorage.getItem('userId');
-   if(userId){
-     axios.get(url2, {
-       headers: {
-         "x-auth-token": userId
-       }
-     })
-     .then((res) => {
-       // console.log(res);
-       // console.log(res.data)
-       if(res.data.products){
-         setLikedproducts(res.data.products.likedProducts);
-       }
-       // console.log("liked", likedproducts);
-     })
-     .catch((err) => {
-       // console.log(err);
-       // Only show error if user is logged in
-       if(userId) {
-         console.error('Error fetching liked products:', err);
-       }
-     });
-   }
+    Promise.all(promises)
+      .then(([productsRes, likedRes]) => {
+        if(productsRes && productsRes.data.product){
+          setProducts(productsRes.data.product);
+        }
+        if(likedRes && likedRes.data && likedRes.data.products){
+          setLikedproducts(likedRes.data.products.likedProducts);
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching data:', err);
+        alert('error78in products');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
   },[]) // Remove refresh dependency - only fetch on mount
 
@@ -166,6 +158,16 @@ const handelclear = ()=>{
 const handleProducts= (id)=>{
     navigate('/product/'+id)
 }
+
+  if (loading) {
+    return (
+      <div className='home-page'>
+        <Header search={search} handleSearch={handleSearch} handleClick={handleClick}/>
+        <Categoriess handleCategory = {handleCategory}/>
+        <Loader message="Loading products..." />
+      </div>
+    );
+  }
 
   return (
     <div className='home-page'>

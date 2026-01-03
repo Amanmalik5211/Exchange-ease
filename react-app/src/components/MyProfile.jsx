@@ -3,11 +3,14 @@ import axios from 'axios';
 import Header from './Header';
 import './MyDetails.css';
 import { API_ENDPOINTS } from '../config/api';
+import Loader from './Loader';
 
 const MyProfile = () => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         const userId = localStorage.getItem("userId");
         const url = API_ENDPOINTS.MY_PROFILE(userId);
 
@@ -21,8 +24,20 @@ const MyProfile = () => {
             .catch((err) => {
                 console.log(err);
                 alert('Error fetching user profile');
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }, []);
+
+    if (loading) {
+        return (
+            <div className="profile-page">
+                <Header />
+                <Loader message="Loading profile..." />
+            </div>
+        );
+    }
 
     return (
         <div className="profile-page">
@@ -48,9 +63,9 @@ const MyProfile = () => {
                     </div>
                 </div>
             )}
-            {!user && (
+            {!user && !loading && (
                 <div className="profile-loading">
-                    <p>Loading...</p>
+                    <p>No profile data found</p>
                 </div>
             )}
         </div>

@@ -8,6 +8,8 @@ import './LikedProduct.css';
 import './Home.css'
 import { toast } from 'react-toastify';
 import { API_ENDPOINTS, getImageUrl } from '../config/api';
+import Loader from './Loader';
+
 const LikedProduct = () => {
 
   const navigate = useNavigate();
@@ -15,14 +17,17 @@ const LikedProduct = () => {
   const [likedproducts,setLikedproducts] = useState([]);
   const [cproducts,setCproducts] = useState([]);
   const [search,setSearch] = useState('');
-  console.log("sdfghj76890987",likedproducts);
+  const [issearch,setIssearch] = useState(false);
+  const [loading, setLoading] = useState(true);
  
 
   useEffect(() => {
+    setLoading(true);
     const url = API_ENDPOINTS.LIKED_PRODUCTS;
     const userId = localStorage.getItem("userId");
     
     if (!userId) {
+      setLoading(false);
       return;
     }
     
@@ -41,6 +46,9 @@ const LikedProduct = () => {
     .catch((err) => {
       console.log(err);
       alert('Error fetching liked products');
+    })
+    .finally(() => {
+      setLoading(false);
     });
   }, []) // Only run on mount, not when products change 
 
@@ -57,6 +65,13 @@ const LikedProduct = () => {
     return false;
   })
   setCproducts(filteredProducts)
+  setIssearch(true);
+  }
+
+  const handleClear = () => {
+    setCproducts([]);
+    setIssearch(false);
+    setSearch('');
   }
 
   const handleCategory = (value)=>{
@@ -69,6 +84,7 @@ const LikedProduct = () => {
     return false;
   })
   setCproducts(filteredProducts)
+  setIssearch(true);
   }
 
 
@@ -104,13 +120,41 @@ const handleDislike = async (productId) => {
   }
 }
 
+  // Determine which products to display
+  const displayProducts = issearch && cproducts && cproducts.length > 0 ? cproducts : products;
+
+  if (loading) {
+    return (
+      <div>
+        <Header search={search} handleSearch={handleSearch} handleClick={handleClick}/>
+        <Categoriess handleCategory = {handleCategory}/>
+        <Loader message="Loading favorite products..." />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Header search={search} handleSearch={handleSearch} handleClick={handleClick}/>
       <Categoriess handleCategory = {handleCategory}/>
+      
+      {issearch && cproducts && cproducts.length > 0 && (
+        <h3 className='search-result'>
+          Search Results
+          <button className='clear-btn' onClick={handleClear}>Clear</button>
+        </h3>
+      )}
+      
+      {issearch && cproducts && cproducts.length === 0 && (
+        <div className='search-noresult'>
+          <div className='empty-state-text'>No products found</div>
+          <p style={{fontSize: '14px', marginTop: '10px', color: '#9ca3af'}}>Try different search terms or browse all categories</p>
+        </div>
+      )}
+      
       <div className='d-flex justify-content-center flex-wrap'>
-      {cproducts && cproducts.length>0 &&
-         cproducts.map((item,index)=>{
+      {displayProducts && displayProducts.length > 0 ? (
+         displayProducts.map((item,index)=>{
            return(
              <div key={item._id} className='card m-4 carrdd'>
             <div className='icon-cont'>
@@ -128,29 +172,12 @@ const handleDislike = async (productId) => {
             </div>             </div>
           )
         })
-      }
-      </div>
-      <div className='d-flex justify-content-center flex-wrap'>
-      {products && products.length>0 &&
-         products.map((item,index)=>{
-          return(
-            <div key={item._id} className='card m-4 carrdd'>
-           <div className='icon-cont'>
-              {likedproducts.find(likedItem => likedItem._id === item._id) ? (
-                        <FaHeart onClick={()=>handleDislike(item._id)} className='red-icon'/>): (
-                             <FaHeart className='icon' />
-                                   )}
-                  </div>           
-             <img onClick = {()=>handleProducts(item._id)} className='product-image' src={getImageUrl(item.pimage)} alt={item.pname}/>
-            <div className='card-content'>
-              <span className='category-badge'>{item.pcategory}</span>
-              <h3 className='namee-text'>{item.pname}</h3>
-              <p className='pricee-text'>₹{item.price}</p>
-              <p className='descc'>{item.pdesc.length > 50 ? item.pdesc.substring(0, 50) + '...' : item.pdesc}</p>
-            </div>             </div>
-          )
-         })
-      }
+      ) : (
+        <div className='empty-state'>
+          <div className='empty-state-text'>No liked products found</div>
+          <p style={{fontSize: '14px', marginTop: '10px', color: '#9ca3af'}}>Start liking products to see them here!</p>
+        </div>
+      )}
       </div>
     </div>
   )

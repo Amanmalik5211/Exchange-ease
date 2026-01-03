@@ -8,13 +8,16 @@ import ProductImages from './product/ProductImages';
 import ProductInfo from './product/ProductInfo';
 import ContactInfo from './product/ContactInfo';
 import ChatSection from './product/ChatSection';
+import Loader from './Loader';
 
 const ProductDetail = () => {
   const params = useParams();
   const [product, setProduct] = useState();
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const url = API_ENDPOINTS.GET_PRODUCT_BY_ID(params.productid);
     axios
       .get(url)
@@ -44,8 +47,20 @@ const ProductDetail = () => {
       .catch((err) => {
         console.log(err);
         alert("errorin product details");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [params.productid]);
+
+  if (loading) {
+    return (
+      <div className="product-detail-page">
+        <Header />
+        <Loader message="Loading product details..." />
+      </div>
+    );
+  }
 
   return (
     <div className="product-detail-page">

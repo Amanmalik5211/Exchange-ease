@@ -6,14 +6,17 @@ import Categoriess from './Categoriess';
 import { FaHeart } from "react-icons/fa6";
 import './MyProduct.css'
 import { API_ENDPOINTS, getImageUrl } from '../config/api';
+import Loader from './Loader';
 
 const MyProducts = () => {
   const [products,setProducts] = useState([]);
   const [search,setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
 
   useEffect(() => {
+    setLoading(true);
     const userId = localStorage.getItem("userId");
     const url = API_ENDPOINTS.MY_PRODUCTS(userId);
   // console.log(userId,'***')
@@ -27,8 +30,11 @@ const MyProducts = () => {
       .catch((err) => {
         console.log(err);
         alert('error in my products');
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, [products]); 
+  }, []); 
   
 
   const handleSearch = (value)=>{
@@ -100,6 +106,17 @@ axios.post(url,data)
 const handleProducts= (id)=>{
   navigate('/myproduct/'+id)
 }
+
+  if (loading) {
+    return (
+      <div>
+        <Header search={search} handleSearch={handleSearch} handleClick={handleClick}/>
+        <Categoriess handleCategory = {handleCategory}/>
+        <Loader message="Loading your products..." />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Header search={search} handleSearch={handleSearch} handleClick={handleClick}/>

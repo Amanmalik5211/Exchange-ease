@@ -7,6 +7,7 @@ import axios from 'axios';
 import './Home.css';
 import { toast } from 'react-toastify';
 import { API_ENDPOINTS, getImageUrl } from '../config/api';
+import Loader from './Loader';
 
 const CategoryPage = () => {
   const navigate = useNavigate();
@@ -16,8 +17,10 @@ const CategoryPage = () => {
   const [search, setSearch] = useState('');
   const [issearch, setIssearch] = useState(false);
   const [likedproducts, setLikedproducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const url = API_ENDPOINTS.GET_PRODUCTS_BY_CATEGORY(params.catName);
     axios.get(url)
       .then((res) => {
@@ -29,6 +32,9 @@ const CategoryPage = () => {
       .catch((err) => {
         console.log(err);
         alert('error in products');
+      })
+      .finally(() => {
+        setLoading(false);
       });
 
     const url2 = API_ENDPOINTS.LIKED_PRODUCTS;
@@ -153,6 +159,20 @@ const CategoryPage = () => {
     navigate('/category/' + params.catName);
     setIssearch(false);
   };
+
+  if (loading) {
+    return (
+      <div className='home-page'>
+        <Header
+          search={search}
+          handleSearch={handleSearch}
+          handleClick={handleClick}
+        />
+        <Categoriess handleCategory={handleCategory} />
+        <Loader message="Loading products..." />
+      </div>
+    );
+  }
 
   return (
     <div className='home-page'>
